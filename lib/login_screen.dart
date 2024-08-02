@@ -8,6 +8,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final username =
+
+
+
   @override
   Widget build(context) {
     return Scaffold(
@@ -23,30 +27,26 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-      body: Column(children: [
-        const Divider(
-          color: Colors.white,
-          thickness: 2,
-        ),
-        Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.deepPurple, Colors.indigo],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter),
-          ),
-          child: const Center(
-            child: Text(
-              "Teste",
-              style: TextStyle(
-                color: Colors.tealAccent,
-                fontSize: 28.0,
-                fontWeight: FontWeight.w500,
-              ),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Spacer(
+              flex: 2,
             ),
-          ),
+            Text(
+              "Login",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.deepPurple,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w500),
+            )
+          ],
         ),
-      ]),
+      ),
     );
   }
 }
