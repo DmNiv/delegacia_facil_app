@@ -1,3 +1,4 @@
+import 'package:delegacia_facil_app/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -36,6 +37,17 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()));
+          },
+          icon: const Icon(
+            Icons.person_rounded,
+            color: Colors.white,
+            size: 32,
+          ),
+        ),
         centerTitle: true,
         title: const Text(
           'DelegaciaFácil',
