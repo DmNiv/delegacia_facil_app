@@ -1,5 +1,6 @@
 import "dart:ui";
 
+import "package:delegacia_facil_app/map_screen.dart";
 import "package:flutter/material.dart";
 
 class LoginScreen extends StatefulWidget {
@@ -19,6 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     print("Usuário: $username");
     print("Senha: $password");
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const MapScreen()));
+
   }
 
   @override
