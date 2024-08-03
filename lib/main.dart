@@ -1,6 +1,5 @@
+import 'package:delegacia_facil_app/map_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'map_screen.dart';
 
 void main() {
   runApp(const MyApp());
