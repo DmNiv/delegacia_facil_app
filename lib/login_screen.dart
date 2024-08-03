@@ -33,13 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Colors.white, fontWeight: FontWeight.w500, fontSize: 28.8),
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: 150.0),
               const Text(
                 "Delegacia Fácil",
                 style: TextStyle(
@@ -55,7 +56,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _usernameController,
                 decoration: const InputDecoration(
                     labelText: "Login:", border: OutlineInputBorder()),
-              )
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                    labelText: "Senha:", border: OutlineInputBorder()),
+                obscureText: true,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: login, child: const Text("Entrar"))
             ],
           ),
         ),
