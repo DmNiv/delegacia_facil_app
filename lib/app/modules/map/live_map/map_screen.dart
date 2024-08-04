@@ -1,10 +1,10 @@
-import 'package:delegacia_facil_app/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'location_service.dart';
+import '../../user/user_profile/profile_view.dart';
+import '../../../repositories/location_service.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -42,12 +42,21 @@ class _MapScreenState extends State<MapScreen> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ProfileScreen()));
           },
-          icon: const Icon(
-            Icons.person_rounded,
-            color: Colors.white,
-            size: 32,
+          icon: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Text(
+              "AB",
+              style: TextStyle(
+                color: Color.fromARGB(255, 130, 105, 173),
+                fontSize: 16,
+              ),
+            ),
           ),
-        ),
+          // icon: const Icon(
+          //   Icons.person_rounded,
+          //   color: Colors.white,
+          //   size: 32,
+          ),
         centerTitle: true,
         title: const Text(
           'DelegaciaFácil',

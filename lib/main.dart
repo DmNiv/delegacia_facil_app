@@ -1,4 +1,4 @@
-import 'package:delegacia_facil_app/login_screen.dart';
+import 'package:delegacia_facil_app/app/modules/user/user_login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
