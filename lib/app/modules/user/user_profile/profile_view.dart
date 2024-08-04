@@ -1,6 +1,6 @@
-import 'package:delegacia_facil_app/map_screen.dart';
-import 'package:delegacia_facil_app/screens/profile/profile_data.dart';
-import 'package:delegacia_facil_app/screens/profile/profile_icon.dart';
+import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_data.dart';
+import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_icon.dart';
+import 'package:delegacia_facil_app/app/modules/map/live_map/map_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
