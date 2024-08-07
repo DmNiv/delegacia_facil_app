@@ -6,17 +6,18 @@ class ProfileIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.maxFinite,
-      height: 200.0,
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      color: Colors.deepPurple,
-      child: const CircleAvatar(
-        backgroundColor: Colors.white,
-        child: Text(
-          "AB",
-          style: TextStyle(
-            color: Color.fromARGB(255, 130, 105, 173),
-            fontSize: 64,
+      height: 160,
+      decoration: const BoxDecoration(color: Colors.deepPurple),
+      child: const Center(
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 60.0,
+          child: Text(
+            "AB",
+            style: TextStyle(
+              color: Color.fromARGB(255, 104, 84, 139),
+              fontSize: 56,
+            ),
           ),
         ),
       ),

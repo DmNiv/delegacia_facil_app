@@ -1,97 +1,60 @@
 import 'package:flutter/material.dart';
 
 class ProfileData extends StatelessWidget {
+  // tem que criar essa classe depois para poder implementar o restante
+  // final Profile profile;
+
+  // adicionar required this.profile no construtor abaixo
   const ProfileData({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        ListTile(
-          title: Text(
-            'Nome',
-            style: TextStyle(
-              color: Colors.deepPurple,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            'Nome Sobrenome',
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
+        _buildListTile(
+          title: 'Nome',
+          subtitle: 'profile.name profile.surname',
         ),
-        Divider(),
-        ListTile(
-          title: Text(
-            'Email',
-            style: TextStyle(
-              color: Colors.deepPurple,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            'email@email.com',
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
+        const Divider(),
+        _buildListTile(
+          title: 'Email',
+          subtitle: 'profile.email',
         ),
-        Divider(),
-        ListTile(
-          title: Text(
-            'Tefelone',
-            style: TextStyle(
-              color: Colors.deepPurple,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            '(91) 99999-9999',
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
+        const Divider(),
+        _buildListTile(
+          title: 'Telefone',
+          subtitle: 'profile.phone',
         ),
-        Divider(),
-        ListTile(
-          title: Text(
-            'Data de nascimento',
-            style: TextStyle(
-              color: Colors.deepPurple,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            '00/00/0000',
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
+        const Divider(),
+        _buildListTile(
+          title: 'Data de Nascimento',
+          subtitle: 'profile.dateOfBith',
         ),
-        Divider(),
-        ListTile(
-          title: Text(
-            'Sexo',
-            style: TextStyle(
-              color: Colors.deepPurple,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            'Sexo do mano',
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
+        const Divider(),
+        _buildListTile(
+          title: 'Sexo',
+          subtitle: 'profile.gender',
         ),
       ],
+    );
+  }
+
+  ListTile _buildListTile({required String title, required String subtitle}) {
+    return ListTile(
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.deepPurple,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: const TextStyle(
+          fontSize: 18,
+        ),
+      ),
     );
   }
 }

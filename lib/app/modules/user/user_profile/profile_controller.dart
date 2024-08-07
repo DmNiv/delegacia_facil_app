@@ -13,3 +13,21 @@ class UserProfileController{
 
   }
 }
+
+// class Profile {
+//   final String name;
+//   final String surname;
+//   final String email;
+//   final String phone;
+//   final String dob; // date of birth
+//   final String gender;
+
+//   Profile({
+//     required this.name,
+//     required this.surname,
+//     required this.email,
+//     required this.phone,
+//     required this.dob,
+//     required this.gender,
+//   });
+// }
