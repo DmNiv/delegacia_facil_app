@@ -1,4 +1,6 @@
+import "package:delegacia_facil_app/app/modules/user/user_login/login_screen.dart";
 import "package:flutter/material.dart";
+import "package:intl/intl.dart";
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,7 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? _selectedGender;
-  late final String birthDate;
+  DateTime? _selectedDate;
 
   void SignUp() {
     String name = _nameController.text;
@@ -24,6 +26,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String cellphoneNumber = _cellphoneNumberController.text;
     String password = _passwordController.text;
     String userGender = _selectedGender ?? "Não especificado";
+    String birthDate = _selectedDate != null
+        ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
+        : "Não especificado";
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -56,16 +64,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                    labelText: "Primeiro nome:", border: OutlineInputBorder()),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                          labelText: "Primeiro nome:",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: TextField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                          labelText: "Sobrenome:",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(
-                    labelText: "Sobrenome:", border: OutlineInputBorder()),
+              InkWell(
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
+
+                  if (pickedDate != null) {
+                    setState(() {
+                      _selectedDate = pickedDate;
+                    });
+                  }
+                },
+                child: InputDecorator(
+                  decoration: const InputDecoration(
+                      labelText: "Data de nascimento:",
+                      border: OutlineInputBorder()),
+                  child: Text(
+                    _selectedDate != null
+                        ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
+                        : 'Selecione a data',
+                    style: TextStyle(
+                        color:
+                            _selectedDate != null ? Colors.black : Colors.grey),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
@@ -116,6 +164,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 obscureText: true,
               ),
+              const SizedBox(height: 40),
+              ElevatedButton(onPressed: SignUp, child: const Text("Sign Up"))
             ],
           ),
         ),
