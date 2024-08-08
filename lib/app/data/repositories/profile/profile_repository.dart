@@ -1,20 +1,25 @@
+import 'package:delegacia_facil_app/app/data/models/profile.model.dart';
+import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
 import 'profile_repository.interface.dart';
+class ProfileRepository implements IProfileRepository{
+  final DelegaciaFacilApiClient apiClient;
 
-final class ProfileRepository implements IProfileRepository {
+  ProfileRepository(this.apiClient);
 
   @override
-  Future<dynamic> getProfileInfo() async {
-    final url = "";
+  Future<Profile> getProfileInfo() async {
+    const url = "http://ngrok.bla.bla.bla/api/v1/user-profile"; 
 
     try {
-      // recebera uma chamada get que retonara o perfil do usuario
-      // final response = await client.get(url);
-      String response = "perfil";
+      final response = await apiClient.get(url);
 
+      final profileInfo = Profile.fromMap(response.data);
 
-      return response;
-    } catch (_) {
-      return (valid: false, reason: 'Erro interno durante a requisição', data: null);
+      return profileInfo;
+    } catch (e) {
+
+      print('Erro ao obter informações do perfil: $e');
+      rethrow; 
     }
   }
 }
