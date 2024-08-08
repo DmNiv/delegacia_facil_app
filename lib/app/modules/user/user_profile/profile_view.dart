@@ -1,3 +1,4 @@
+import 'package:delegacia_facil_app/app/modules/user/user_edit_profile/edit_profile_screen.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_data.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_icon.dart';
 import 'package:delegacia_facil_app/app/modules/map/live_map/map_screen.dart';
@@ -29,7 +30,10 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () => {print('indo editar....')},
+            onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const EditProfileScreen()));
+          },
             icon: const Icon(
               Icons.edit_rounded,
               color: Colors.white,
