@@ -4,7 +4,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import '../../user/user_profile/profile_view.dart';
-import '../../../repositories/location_service.dart';
+import '../../../data/repositories/location_service.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
