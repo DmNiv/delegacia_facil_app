@@ -41,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         centerTitle: true,
         backgroundColor: Colors.deepPurple,
         title: const Text(
-          "Cadastro",
+          "Delegacia Fácil",
           style: TextStyle(
               color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w500),
         ),
@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               const SizedBox(height: 60.0),
               const Text(
-                "Delegacia Fácil",
+                "Cadastro",
                 style: TextStyle(
                   color: Colors.deepPurple,
                   fontWeight: FontWeight.w500,

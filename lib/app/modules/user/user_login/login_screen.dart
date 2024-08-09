@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
         title: const Text(
-          "Login",
+          "Delegacia Fácil",
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.w500, fontSize: 28.8),
         ),
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 150.0),
               const Text(
-                "Delegacia Fácil",
+                "Login",
                 style: TextStyle(
                   color: Colors.deepPurple,
                   fontSize: 28.0,
