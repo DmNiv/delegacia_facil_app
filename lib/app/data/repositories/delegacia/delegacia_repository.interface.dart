@@ -1,3 +1,5 @@
+import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
+
 abstract interface class IDelegaciaRepository {
-  Future<dynamic> getDelegacias();
+  Future<List<Delegacia>> getDelegacias();
 }
