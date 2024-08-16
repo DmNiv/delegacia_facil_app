@@ -4,8 +4,13 @@ class DelegaciaService {
   final Dio _dio = Dio();
 
   Future<List<Delegacia>> getDelegacias() async {
-    final response = await _dio.get('http://localhost:8080/delegacias/');
-    return (response.data as List).map((json) => Delegacia.fromJson(json)).toList();
+    // final response = await _dio.get('http://localhost:8080/delegacias/');
+    final response = await _dio.get(
+        'https://304a-2804-14c-598f-89b1-2d79-a105-89a1-c93e.ngrok-free.app/delegacias');
+    print(response.data);
+    return (response.data as List)
+        .map((map) => Delegacia.fromMap(map))
+        .toList();
   }
 }
 
@@ -28,15 +33,15 @@ class Delegacia {
     required this.longitude,
   });
 
-  factory Delegacia.fromJson(Map<String, dynamic> json) {
+  factory Delegacia.fromMap(Map<String, dynamic> map) {
     return Delegacia(
-      id: json['id'],
-      nome: json['nome'],
-      endereco: json['endereco'],
-      tipo: json['tipo'],
-      horario24h: json['horario24h'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      id: map['id'],
+      nome: map['nome'],
+      endereco: map['endereco'],
+      tipo: map['tipo'],
+      horario24h: map['horario24h'],
+      latitude: map['latitude'],
+      longitude: map['longitude'],
     );
   }
 }

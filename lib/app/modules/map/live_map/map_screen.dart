@@ -1,10 +1,11 @@
+import 'package:delegacia_facil_app/app/data/repositories/delegacia_service/delegacia_service.dart';
+import 'package:delegacia_facil_app/app/data/repositories/location_service.dart';
+import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import '../../user/user_profile/profile_view.dart';
-import '../../../data/repositories/location_service.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -15,14 +16,23 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final LocationService _locationService = LocationService();
+  final DelegaciaService _delegaciaService = DelegaciaService();
   Position? _currentPosition;
+  List<Marker> _delegaciaMarkers = [];
 
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission();
+    _initializeLocationAndMarkers();
   }
 
+  // Função principal para inicializar localização e buscar delegacias
+  Future<void> _initializeLocationAndMarkers() async {
+    await _requestLocationPermission();
+    await _fetchAndSetDelegaciaMarkers();
+  }
+
+  // Função para solicitar permissão de localização
   Future<void> _requestLocationPermission() async {
     try {
       Position position = await _locationService.determinePosition();
@@ -30,16 +40,40 @@ class _MapScreenState extends State<MapScreen> {
         _currentPosition = position;
       });
 
-      // Iniciar a escuta de mudanças na posição
       _locationService.getPositionStream().listen((Position position) {
         setState(() {
           _currentPosition = position;
         });
       });
     } catch (e) {
-      // Se o usuário negar a permissão, você pode mostrar uma mensagem ou lidar com isso de outra forma
       print('Erro ao obter a localização: $e');
     }
+  }
+
+  // Função para buscar delegacias e configurar os marcadores
+  Future<void> _fetchAndSetDelegaciaMarkers() async {
+    try {
+      List<Delegacia> delegacias = await _delegaciaService.getDelegacias();
+      _setDelegaciaMarkers(delegacias);
+    } catch (e) {
+      print('Erro ao buscar as delegacias: $e');
+    }
+  }
+
+  // Função para criar os marcadores das delegacias
+  void _setDelegaciaMarkers(List<Delegacia> delegacias) {
+    setState(() {
+      _delegaciaMarkers = delegacias.map((delegacia) {
+        return Marker(
+          point: LatLng(delegacia.latitude, delegacia.longitude),
+          child: Icon(
+            Icons.location_on,
+            color: Colors.red,
+            size: 40.0,
+          ),
+        );
+      }).toList();
+    });
   }
 
   @override
@@ -48,10 +82,12 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
           },
-          icon: CircleAvatar(
+          icon: const CircleAvatar(
             backgroundColor: Colors.white,
             child: Text(
               "AB",
@@ -77,33 +113,46 @@ class _MapScreenState extends State<MapScreen> {
         child: _currentPosition == null
             ? const CircularProgressIndicator()
             : FlutterMap(
-          mapController: MapController(),
-          options: MapOptions(
-            initialCenter: LatLng(
-                _currentPosition!.latitude, _currentPosition!.longitude),
-            initialZoom: 18,
-          ),
-          children: [
-            TileLayer(
-              urlTemplate:
-              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-            ),
-            CurrentLocationLayer(
-              style: const LocationMarkerStyle(
-                marker: DefaultLocationMarker(
-                  color: Colors.blue,
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
+                mapController: MapController(),
+                options: MapOptions(
+                  initialCenter: LatLng(
+                    _currentPosition!.latitude,
+                    _currentPosition!.longitude,
                   ),
+                  initialZoom: 18,
                 ),
-                markerSize: Size(40, 40),
-                markerDirection: MarkerDirection.top,
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+                  ),
+                  CurrentLocationLayer(
+                    style: const LocationMarkerStyle(
+                      marker: DefaultLocationMarker(
+                        color: Colors.blue,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                      ),
+                      markerSize: Size(40, 40),
+                      markerDirection: MarkerDirection.top,
+                    ),
+                  ),
+                  MarkerLayer(
+                    markers: _delegaciaMarkers,
+                    // markers: [
+                    //   Marker(
+                    //       point: LatLng(-1.4338, -48.4639),
+                    //       child: Icon(
+                    //         Icons.location_on,
+                    //         color: Colors.red,
+                    //       ))
+                    // ],
+                  ), // Adicione os marcadores das delegacias
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
