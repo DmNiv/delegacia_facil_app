@@ -1,5 +1,4 @@
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
-import 'package:dio/dio.dart';
 import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/repositories/delegacia/delegacia_repository.interface.dart';
 

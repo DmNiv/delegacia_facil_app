@@ -4,7 +4,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/repositories/delegacia/delegacia_repository.dart';
 import 'package:delegacia_facil_app/app/data/repositories/location_service.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_view.dart';
@@ -19,7 +18,8 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final LocationService _locationService = LocationService();
   final apiClient = DelegaciaFacilApiClient();
-  final DelegaciaRepository _delegaciaService = DelegaciaRepository.defaultClient();
+  final DelegaciaRepository _delegaciaService =
+      DelegaciaRepository.defaultClient();
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
 
@@ -112,36 +112,36 @@ class _MapScreenState extends State<MapScreen> {
         child: _currentPosition == null
             ? const CircularProgressIndicator()
             : FlutterMap(
-          mapController: MapController(),
-          options: MapOptions(
-            initialCenter: LatLng(
-              _currentPosition!.latitude,
-              _currentPosition!.longitude,
-            ),
-            initialZoom: 18,
-          ),
-          children: [
-            TileLayer(
-              urlTemplate:
-              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-            ),
-            MarkerLayer(markers: _delegaciaMarkers),
-            CurrentLocationLayer(
-              style: const LocationMarkerStyle(
-                marker: DefaultLocationMarker(
-                  color: Colors.blue,
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
+                mapController: MapController(),
+                options: MapOptions(
+                  initialCenter: LatLng(
+                    _currentPosition!.latitude,
+                    _currentPosition!.longitude,
                   ),
+                  initialZoom: 18,
                 ),
-                markerSize: Size(40, 40),
-                markerDirection: MarkerDirection.top,
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+                  ),
+                  MarkerLayer(markers: _delegaciaMarkers),
+                  CurrentLocationLayer(
+                    style: const LocationMarkerStyle(
+                      marker: DefaultLocationMarker(
+                        color: Colors.blue,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                      ),
+                      markerSize: Size(40, 40),
+                      markerDirection: MarkerDirection.top,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
