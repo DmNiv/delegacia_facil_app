@@ -20,17 +20,26 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    _locationService.determinePosition().then((position) {
-      setState(() {
-        _currentPosition = position;
-      });
-    });
+    _requestLocationPermission();
+  }
 
-    _locationService.getPositionStream().listen((Position position) {
+  Future<void> _requestLocationPermission() async {
+    try {
+      Position position = await _locationService.determinePosition();
       setState(() {
         _currentPosition = position;
       });
-    });
+
+      // Iniciar a escuta de mudanças na posição
+      _locationService.getPositionStream().listen((Position position) {
+        setState(() {
+          _currentPosition = position;
+        });
+      });
+    } catch (e) {
+      // Se o usuário negar a permissão, você pode mostrar uma mensagem ou lidar com isso de outra forma
+      print('Erro ao obter a localização: $e');
+    }
   }
 
   @override
@@ -52,11 +61,7 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
           ),
-          // icon: const Icon(
-          //   Icons.person_rounded,
-          //   color: Colors.white,
-          //   size: 32,
-          ),
+        ),
         centerTitle: true,
         title: const Text(
           'DelegaciaFácil',
@@ -72,33 +77,33 @@ class _MapScreenState extends State<MapScreen> {
         child: _currentPosition == null
             ? const CircularProgressIndicator()
             : FlutterMap(
-                mapController: MapController(),
-                options: MapOptions(
-                  initialCenter: LatLng(
-                      _currentPosition!.latitude, _currentPosition!.longitude),
-                  initialZoom: 18,
-                ),
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+          mapController: MapController(),
+          options: MapOptions(
+            initialCenter: LatLng(
+                _currentPosition!.latitude, _currentPosition!.longitude),
+            initialZoom: 18,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate:
+              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+            ),
+            CurrentLocationLayer(
+              style: const LocationMarkerStyle(
+                marker: DefaultLocationMarker(
+                  color: Colors.blue,
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
                   ),
-                  CurrentLocationLayer(
-                    style: const LocationMarkerStyle(
-                      marker: DefaultLocationMarker(
-                        color: Colors.blue,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                      markerSize: Size(40, 40),
-                      markerDirection: MarkerDirection.top,
-                    ),
-                  )
-                ],
+                ),
+                markerSize: Size(40, 40),
+                markerDirection: MarkerDirection.top,
               ),
+            ),
+          ],
+        ),
       ),
     );
   }
