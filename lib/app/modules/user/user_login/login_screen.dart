@@ -21,9 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Usuário: $username");
     print("Senha: $password");
 
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const MapScreen()));
-
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const MapScreen()));
   }
 
   @override
@@ -40,40 +39,38 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 150.0),
-              const Text(
-                "Login",
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontSize: 28.0,
-                ),
-                textAlign: TextAlign.center,
+            padding: const EdgeInsets.all(24.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    "Login",
+                    style: TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 28.0,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 40),
+                  TextField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                        labelText: "Login:", border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                        labelText: "Senha:", border: OutlineInputBorder()),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(onPressed: login, child: const Text("Entrar"))
+                ],
               ),
-              const SizedBox(
-                height: 40,
-              ),
-              TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                    labelText: "Login:", border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                    labelText: "Senha:", border: OutlineInputBorder()),
-                obscureText: true,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(onPressed: login, child: const Text("Entrar"))
-            ],
-          ),
-        ),
+            )),
       ),
     );
   }
