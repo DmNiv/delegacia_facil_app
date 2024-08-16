@@ -1,19 +1,3 @@
-import 'package:dio/dio.dart';
-
-class DelegaciaService {
-  final Dio _dio = Dio();
-
-  Future<List<Delegacia>> getDelegacias() async {
-    // final response = await _dio.get('http://localhost:8080/delegacias/');
-    final response = await _dio.get(
-        'https://304a-2804-14c-598f-89b1-2d79-a105-89a1-c93e.ngrok-free.app/delegacias');
-    print(response.data);
-    return (response.data as List)
-        .map((map) => Delegacia.fromMap(map))
-        .toList();
-  }
-}
-
 class Delegacia {
   final int id;
   final String nome;
