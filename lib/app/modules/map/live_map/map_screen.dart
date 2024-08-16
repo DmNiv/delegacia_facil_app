@@ -1,3 +1,4 @@
+import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -17,7 +18,8 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final LocationService _locationService = LocationService();
-  final DelegaciaRepository _delegaciaService = DelegaciaRepository();
+  final apiClient = DelegaciaFacilApiClient();
+  final DelegaciaRepository _delegaciaService = DelegaciaRepository.defaultClient();
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
 
@@ -48,21 +50,26 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _loadDelegacias() async {
     try {
       final delegacias = await _delegaciaService.getDelegacias();
-      setState(() {
-        _delegaciaMarkers = delegacias.map((delegacia) {
-          return Marker(
-            point: LatLng(delegacia.latitude, delegacia.longitude),
-            width: 40,
-            height: 40,
-            child: const Icon(
-              Icons.location_on,
-              color: Colors.red,
-              size: 40,
-            ),
-          );
-        }).toList();
-      });
-      print(_delegaciaMarkers[0].point);
+
+      if (delegacias != null && delegacias.isNotEmpty) {
+        setState(() {
+          _delegaciaMarkers = delegacias.map((delegacia) {
+            return Marker(
+              point: LatLng(delegacia.latitude, delegacia.longitude),
+              width: 40,
+              height: 40,
+              child: const Icon(
+                Icons.location_on,
+                color: Colors.red,
+                size: 40,
+              ),
+            );
+          }).toList();
+        });
+        print(_delegaciaMarkers[0].point);
+      } else {
+        print("Nenhuma delegacia encontrada.");
+      }
     } catch (e) {
       print("Erro ao carregar as delegacias: $e");
     }
@@ -105,37 +112,36 @@ class _MapScreenState extends State<MapScreen> {
         child: _currentPosition == null
             ? const CircularProgressIndicator()
             : FlutterMap(
-                mapController: MapController(),
-                options: MapOptions(
-                  initialCenter: LatLng(
-                    _currentPosition!.latitude,
-                    _currentPosition!.longitude,
+          mapController: MapController(),
+          options: MapOptions(
+            initialCenter: LatLng(
+              _currentPosition!.latitude,
+              _currentPosition!.longitude,
+            ),
+            initialZoom: 18,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate:
+              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+            ),
+            MarkerLayer(markers: _delegaciaMarkers),
+            CurrentLocationLayer(
+              style: const LocationMarkerStyle(
+                marker: DefaultLocationMarker(
+                  color: Colors.blue,
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
                   ),
-                  initialZoom: 18,
                 ),
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-                  ),
-                  MarkerLayer(markers: _delegaciaMarkers),
-                  CurrentLocationLayer(
-                    style: const LocationMarkerStyle(
-                      marker: DefaultLocationMarker(
-                        color: Colors.blue,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                      markerSize: Size(40, 40),
-                      markerDirection: MarkerDirection.top,
-                    ),
-                  ),
-                  
-                ],
+                markerSize: Size(40, 40),
+                markerDirection: MarkerDirection.top,
               ),
+            ),
+          ],
+        ),
       ),
     );
   }
