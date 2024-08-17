@@ -12,7 +12,7 @@ class DelegaciaRepository implements IDelegaciaRepository {
   @override
   Future<List<Delegacia>> getDelegacias() async {
     const url =
-        'https://9f0e-2804-14c-599a-813b-4168-dc72-27e9-6738.ngrok-free.app/delegacias';
+        'https://0a63-2804-14c-598f-89b1-78b0-b179-7a25-2837.ngrok-free.app/delegacias';
     final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
     try {
       final response = await apiClient.get(url, headers: headers);
@@ -22,6 +22,24 @@ class DelegaciaRepository implements IDelegaciaRepository {
       return data.map((map) => Delegacia.fromMap(map)).toList();
     } catch (e) {
       throw Exception("Erro ao carregar as delegacias: $e");
+    }
+  }
+
+  @override
+  Future<List<Delegacia>> getDelegacias24h(bool horario24h) async {
+    const baseUrl =
+        'https://0a63-2804-14c-598f-89b1-78b0-b179-7a25-2837.ngrok-free.app/delegacias';
+    final url = '$baseUrl/horario?horario24h=$horario24h';
+    final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
+
+    try {
+      final response = await apiClient.get(url, headers: headers);
+
+      final List<dynamic> data = response.data;
+
+      return data.map((map) => Delegacia.fromMap(map)).toList();
+    } catch (e) {
+      throw Exception("Erro ao carregar as delegacias filtradas: $e");
     }
   }
 }
