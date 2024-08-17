@@ -1,3 +1,4 @@
+import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -23,8 +24,13 @@ class _MapScreenState extends State<MapScreen> {
       DelegaciaRepository.defaultClient();
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
-  String Erro = '';
-  bool _showFilters = false;
+  String erro = '';
+  bool _horario24h = false;
+  Map<String, bool> tiposSelecionados = {
+    'Mulher': false,
+    'Idoso': false,
+    'PCD': false,
+  };
 
   @override
   void initState() {
@@ -46,7 +52,7 @@ class _MapScreenState extends State<MapScreen> {
         });
       });
     } catch (e) {
-      Erro = e.toString();
+      erro = e.toString();
       print('Erro ao obter a localização: $e');
     }
   }
@@ -111,9 +117,162 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _toggleFilters() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.grey[200],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Filtros',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  SwitchListTile(
+                    title: const Text('Delegacias 24h'),
+                    value: _horario24h,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _horario24h = value;
+                      });
+                    },
+                  ),
+                  Divider(),
+                  CheckboxListTile(
+                    title: const Text('Delegacia da Mulher'),
+                    value: tiposSelecionados['Mulher'],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tiposSelecionados['Mulher'] = value ?? false;
+                      });
+                    },
+                  ),
+                  CheckboxListTile(
+                    title: const Text('Delegacia do Idoso'),
+                    value: tiposSelecionados['Idoso'],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tiposSelecionados['Idoso'] = value ?? false;
+                      });
+                    },
+                  ),
+                  CheckboxListTile(
+                    title: const Text('Delegacia PCD'),
+                    value: tiposSelecionados['PCD'],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tiposSelecionados['PCD'] = value ?? false;
+                      });
+                    },
+                  ),
+                  // Outros filtros aqui...
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          _resetFilters();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Remover Filtros'),
+                        style: TextButton.styleFrom(
+                            textStyle: TextStyle(
+                                color: Colors.deepPurple, fontSize: 16)),
+                      ),
+                      const SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          _applyFilters();
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            textStyle:
+                                TextStyle(color: Colors.white, fontSize: 16)),
+                        child: const Text('Aplicar Filtros'),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _applyFilters() async {
+    try {
+      List<Delegacia> delegacias;
+
+      if (_horario24h) {
+        delegacias = await _delegaciaService.getDelegacias24h(true);
+      } else {
+        delegacias = await _delegaciaService.getDelegacias();
+      }
+
+      setState(() {
+        _delegaciaMarkers = delegacias.map((delegacia) {
+          return Marker(
+            point: LatLng(delegacia.latitude, delegacia.longitude),
+            width: 40,
+            height: 40,
+            child: const Icon(
+              Icons.local_police_rounded,
+              color: Colors.red,
+              size: 40,
+            ),
+          );
+        }).toList();
+      });
+    } catch (e) {
+      print("Erro ao aplicar os filtros: $e");
+      _showErrorDialog("Erro ao aplicar os filtros.");
+    }
+  }
+
+  void _resetFilters() async {
     setState(() {
-      _showFilters = !_showFilters;
+      _horario24h = false;
+      tiposSelecionados = {
+        'Mulher': false,
+        'Idoso': false,
+        'PCD': false,
+      };
+      // Resetar outros filtros, se necessário
     });
+
+    try {
+      final delegacias = await _delegaciaService.getDelegacias();
+
+      setState(() {
+        _delegaciaMarkers = delegacias.map((delegacia) {
+          return Marker(
+            point: LatLng(delegacia.latitude, delegacia.longitude),
+            width: 40,
+            height: 40,
+            child: const Icon(
+              Icons.local_police_rounded,
+              color: Colors.red,
+              size: 40,
+            ),
+          );
+        }).toList();
+      });
+    } catch (e) {
+      print("Erro ao resetar os filtros: $e");
+      _showErrorDialog("Erro ao resetar os filtros.");
+    }
   }
 
   @override
@@ -159,7 +318,7 @@ class _MapScreenState extends State<MapScreen> {
                       children: [
                         const CircularProgressIndicator(),
                         const SizedBox(height: 20),
-                        Text(Erro)
+                        Text(erro)
                       ],
                     ))
                   : FlutterMap(
@@ -199,11 +358,11 @@ class _MapScreenState extends State<MapScreen> {
         floatingActionButton: Stack(
           children: [
             Positioned(
-              bottom: 80,
+              bottom: 90,
               right: 16,
               child: FloatingActionButton(
                 onPressed: _updateLocation,
-                child: Icon(Icons.my_location),
+                child: const Icon(Icons.my_location),
               ),
             ),
             Positioned(
@@ -211,7 +370,7 @@ class _MapScreenState extends State<MapScreen> {
               right: 16,
               child: FloatingActionButton(
                 onPressed: _toggleFilters,
-                child: Icon(Icons.filter_list),
+                child: const Icon(Icons.filter_list),
               ),
             ),
           ],
