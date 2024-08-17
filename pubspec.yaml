@@ -40,6 +40,7 @@ dependencies:
   flutter_map_location_marker: any
   latlong2: any
   dio: ^5.5.0+1
+  google_fonts: ^6.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
