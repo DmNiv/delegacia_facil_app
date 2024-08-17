@@ -16,6 +16,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  final MapController _mapController = MapController();
   final LocationService _locationService = LocationService();
   final apiClient = DelegaciaFacilApiClient();
   final DelegaciaRepository _delegaciaService =
@@ -142,7 +143,7 @@ class _MapScreenState extends State<MapScreen> {
                 ],
               ))
             : FlutterMap(
-                mapController: MapController(),
+                mapController: _mapController,
                 options: MapOptions(
                     initialCenter: LatLng(
                       _currentPosition!.latitude,
@@ -156,8 +157,9 @@ class _MapScreenState extends State<MapScreen> {
                 children: [
                   TileLayer(
                     urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+                        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                    subdomains: const ['a', 'b', 'c', 'd'],
+                    retinaMode: true,
                   ),
                   MarkerLayer(markers: _delegaciaMarkers),
                   CurrentLocationLayer(
