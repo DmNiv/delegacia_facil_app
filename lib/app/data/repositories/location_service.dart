@@ -15,13 +15,12 @@ class LocationService {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Permissão de localização negada');
+        return Future.error('Permissão de localização negada.');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Permissão de localização permanentemente negada, não podemos requerer permissões.');
+      return Future.error('Permissão de localização permanentemente negada.');
     }
 
     return await Geolocator.getCurrentPosition();

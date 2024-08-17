@@ -22,6 +22,7 @@ class _MapScreenState extends State<MapScreen> {
       DelegaciaRepository.defaultClient();
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
+  String Erro = '';
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _MapScreenState extends State<MapScreen> {
         });
       });
     } catch (e) {
+      Erro = e.toString();
       print('Erro ao obter a localização: $e');
     }
   }
@@ -66,13 +68,33 @@ class _MapScreenState extends State<MapScreen> {
             );
           }).toList();
         });
-        print(_delegaciaMarkers[0].point);
       } else {
         print("Nenhuma delegacia encontrada.");
       }
     } catch (e) {
       print("Erro ao carregar as delegacias: $e");
+      _showErrorDialog("Erro ao carregar as delegacias.");
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Erro'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -110,16 +132,27 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: Center(
         child: _currentPosition == null
-            ? const CircularProgressIndicator()
+            ? Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 20),
+                  Text(Erro)
+                ],
+              ))
             : FlutterMap(
                 mapController: MapController(),
                 options: MapOptions(
-                  initialCenter: LatLng(
-                    _currentPosition!.latitude,
-                    _currentPosition!.longitude,
-                  ),
-                  initialZoom: 18,
-                ),
+                    initialCenter: LatLng(
+                      _currentPosition!.latitude,
+                      _currentPosition!.longitude,
+                    ),
+                    initialZoom: 18,
+                    initialRotation: 0.0,
+                    interactionOptions: const InteractionOptions(
+                      flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+                    )),
                 children: [
                   TileLayer(
                     urlTemplate:
