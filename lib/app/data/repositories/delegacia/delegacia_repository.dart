@@ -11,7 +11,8 @@ class DelegaciaRepository implements IDelegaciaRepository {
 
   @override
   Future<List<Delegacia>> getDelegacias() async {
-    const url = 'https://2284-2804-14c-598f-89b1-2d79-a105-89a1-c93e.ngrok-free.app/delegacias';
+    const url =
+        'https://dc2f-2804-14c-598f-89b1-78b0-b179-7a25-2837.ngrok-free.app/delegacias';
     final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
     try {
       final response = await apiClient.get(url, headers: headers);
