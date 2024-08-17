@@ -1,4 +1,3 @@
-import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -51,21 +50,13 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  Future<void> _loadDelegacias({bool? horario24h, List<String>? tipos}) async {
+  Future<void> _loadDelegacias() async {
     try {
-      List<Delegacia>? delegacias;
-
-      if (horario24h == true) {
-        delegacias = await _delegaciaService.getDelegacias24h();
-      } else if (tipos != null && tipos.isNotEmpty) {
-        delegacias = await _delegaciaService.getDelegaciasPorTipo(tipos);
-      } else {
-        delegacias = await _delegaciaService.getDelegacias();
-      }
+      final delegacias = await _delegaciaService.getDelegacias();
 
       if (delegacias != null && delegacias.isNotEmpty) {
         setState(() {
-          _delegaciaMarkers = delegacias!.map((delegacia) {
+          _delegaciaMarkers = delegacias.map((delegacia) {
             return Marker(
               point: LatLng(delegacia.latitude, delegacia.longitude),
               width: 40,
@@ -181,12 +172,7 @@ class _MapScreenState extends State<MapScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _loadDelegacias(
-                    horario24h: _horario24h,
-                    tipos: _tiposSelecionados.keys
-                        .where((key) => _tiposSelecionados[key] == true)
-                        .toList(),
-                  );
+                  // Aqui você aplicaria os filtros e atualizaria a visualização das delegacias
                   Navigator.of(context).pop();
                 },
                 child: const Text('Aplicar Filtros'),

@@ -12,43 +12,16 @@ class DelegaciaRepository implements IDelegaciaRepository {
   @override
   Future<List<Delegacia>> getDelegacias() async {
     const url =
-        'http://localhost:8080/delegacias';
+        'https://9f0e-2804-14c-599a-813b-4168-dc72-27e9-6738.ngrok-free.app/delegacias';
     final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
     try {
       final response = await apiClient.get(url, headers: headers);
+
       final List<dynamic> data = response.data;
+
       return data.map((map) => Delegacia.fromMap(map)).toList();
     } catch (e) {
       throw Exception("Erro ao carregar as delegacias: $e");
     }
   }
-
-  @override
-  Future<List<Delegacia>> getDelegacias24h() async {
-    const url =
-        'https://dc2f-2804-14c-598f-89b1-78b0-b179-7a25-2837.ngrok-free.app/delegacias?horario24h=true';
-    final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
-    try {
-      final response = await apiClient.get(url, headers: headers);
-      final List<dynamic> data = response.data;
-      return data.map((map) => Delegacia.fromMap(map)).toList();
-    } catch (e) {
-      throw Exception("Erro ao carregar as delegacias 24h: $e");
-    }
-  }
-
-  @override
-Future<List<Delegacia>> getDelegaciasPorTipo(List<String> tipos) async {
-  final tipoQuery = tipos.join(",");
-  final url = 'https://dc2f-2804-14c-598f-89b1-78b0-b179-7a25-2837.ngrok-free.app/delegacias?tipos=$tipoQuery';
-  final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
-  try {
-    final response = await apiClient.get(url, headers: headers);
-    final List<dynamic> data = response.data;
-    return data.map((map) => Delegacia.fromMap(map)).toList();
-  } catch (e) {
-    throw Exception("Erro ao carregar as delegacias por tipo: $e");
-  }
-}
-
 }
