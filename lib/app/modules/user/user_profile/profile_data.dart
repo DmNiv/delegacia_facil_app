@@ -57,4 +57,30 @@ class ProfileData extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildExpansionTile({
+    required BuildContext context,
+    required String title,
+    required String subtitle,
+  }) {
+    return ExpansionTile(
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            subtitle,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
 }

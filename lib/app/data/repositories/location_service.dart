@@ -8,7 +8,6 @@ class LocationService {
     // Teste se os serviços de localização estão habilitados.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Serviços de localização não habilitados. Não continue.
       return Future.error('Serviços de localização estão desabilitados.');
     }
 
@@ -16,18 +15,14 @@ class LocationService {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissões estão negadas.
-        return Future.error('Permissão de localização negada');
+        return Future.error('Permissão de localização negada.');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Permissões estão negadas permanentemente.
-      return Future.error(
-          'Permissão de localização permanentemente negada, não podemos requerer permissões.');
+      return Future.error('Permissão de localização permanentemente negada.');
     }
 
-    // Quando as permissões são concedidas, obtenha a posição atual.
     return await Geolocator.getCurrentPosition();
   }
 
@@ -35,8 +30,7 @@ class LocationService {
     return Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter:
-            10, // Receba atualizações quando o dispositivo se mover pelo menos 10 metros.
+        distanceFilter: 10,
       ),
     );
   }

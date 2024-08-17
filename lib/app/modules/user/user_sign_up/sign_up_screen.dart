@@ -48,127 +48,129 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 60.0),
-              const Text(
-                "Cadastro",
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 28.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Row(
+            padding: const EdgeInsets.all(24.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                          labelText: "Primeiro nome:",
-                          border: OutlineInputBorder()),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: TextField(
-                      controller: _lastNameController,
-                      decoration: const InputDecoration(
-                          labelText: "Sobrenome:",
-                          border: OutlineInputBorder()),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              InkWell(
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                  );
-
-                  if (pickedDate != null) {
-                    setState(() {
-                      _selectedDate = pickedDate;
-                    });
-                  }
-                },
-                child: InputDecorator(
-                  decoration: const InputDecoration(
-                      labelText: "Data de nascimento:",
-                      border: OutlineInputBorder()),
-                  child: Text(
-                    _selectedDate != null
-                        ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
-                        : 'Selecione a data',
+                  const Text(
+                    "Cadastro",
                     style: TextStyle(
-                        color:
-                            _selectedDate != null ? Colors.black : Colors.grey),
+                      color: Colors.deepPurple,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 28.0,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              DropdownButtonFormField<String>(
-                value: _selectedGender,
-                decoration: const InputDecoration(
-                  labelText: "Gênero",
-                  border: OutlineInputBorder(),
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: "Masculino",
-                    child: Text("Masculino"),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _nameController,
+                          decoration: const InputDecoration(
+                              labelText: "Primeiro nome:",
+                              border: OutlineInputBorder()),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: TextField(
+                          controller: _lastNameController,
+                          decoration: const InputDecoration(
+                              labelText: "Sobrenome:",
+                              border: OutlineInputBorder()),
+                        ),
+                      ),
+                    ],
                   ),
-                  DropdownMenuItem(
-                    value: "Feminino",
-                    child: Text("Feminino"),
+                  const SizedBox(height: 20),
+                  InkWell(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
+
+                      if (pickedDate != null) {
+                        setState(() {
+                          _selectedDate = pickedDate;
+                        });
+                      }
+                    },
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                          labelText: "Data de nascimento:",
+                          border: OutlineInputBorder()),
+                      child: Text(
+                        _selectedDate != null
+                            ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
+                            : 'Selecione a data',
+                        style: TextStyle(
+                            color: _selectedDate != null
+                                ? Colors.black
+                                : Colors.grey),
+                      ),
+                    ),
                   ),
-                  DropdownMenuItem(
-                    value: "Outro",
-                    child: Text("Outro"),
-                  )
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
+                    value: _selectedGender,
+                    decoration: const InputDecoration(
+                      labelText: "Gênero",
+                      border: OutlineInputBorder(),
+                    ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: "Masculino",
+                        child: Text("Masculino"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Feminino",
+                        child: Text("Feminino"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Outro",
+                        child: Text("Outro"),
+                      )
+                    ],
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedGender = newValue;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: _cellphoneNumberController,
+                    decoration: const InputDecoration(
+                        labelText: "Número de Celular:",
+                        border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                        labelText: "Email:", border: OutlineInputBorder()),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: "Senha:",
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 40),
+                  ElevatedButton(
+                      onPressed: SignUp, child: const Text("Sign Up"))
                 ],
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedGender = newValue;
-                  });
-                },
               ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _cellphoneNumberController,
-                decoration: const InputDecoration(
-                    labelText: "Número de Celular:",
-                    border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                    labelText: "Email:", border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: "Senha:",
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 40),
-              ElevatedButton(onPressed: SignUp, child: const Text("Sign Up"))
-            ],
-          ),
-        ),
+            )),
       ),
     );
   }
