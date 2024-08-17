@@ -24,7 +24,6 @@ class _MapScreenState extends State<MapScreen> {
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
   String Erro = '';
-  bool _showFilters = false;
 
   @override
   void initState() {
@@ -111,9 +110,78 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _toggleFilters() {
-    setState(() {
-      _showFilters = !_showFilters;
-    });
+    bool _horario24h = false;
+    Map<String, bool> _tiposSelecionados = {
+      'Mulher': false,
+      'Idoso': false,
+      'PCD': false,
+    };
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.grey[200], // Escurecer o fundo
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Filtros',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              // Adicione os widgets dos filtros aqui
+              SwitchListTile(
+                  title: const Text('Delegacias 24h'),
+                  value: _horario24h,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _horario24h = true;
+                    });
+                  }),
+              CheckboxListTile(
+                title: const Text('Delegacia da Mulher'),
+                value: _tiposSelecionados['Mulher'],
+                onChanged: (bool? value) {
+                  setState(() {
+                    _tiposSelecionados['Mulher'] = value ?? false;
+                  });
+                },
+              ),
+              CheckboxListTile(
+                title: const Text('Delegacia do Idoso'),
+                value: _tiposSelecionados['Idoso'],
+                onChanged: (bool? value) {
+                  setState(() {
+                    _tiposSelecionados['Idoso'] = value ?? false;
+                  });
+                },
+              ),
+              CheckboxListTile(
+                title: const Text('Delegacia PCD'),
+                value: _tiposSelecionados['PCD'],
+                onChanged: (bool? value) {
+                  setState(() {
+                    _tiposSelecionados['PCD'] = value ?? false;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Aqui você aplicaria os filtros e atualizaria a visualização das delegacias
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Aplicar Filtros'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -199,11 +267,11 @@ class _MapScreenState extends State<MapScreen> {
         floatingActionButton: Stack(
           children: [
             Positioned(
-              bottom: 80,
+              bottom: 90,
               right: 16,
               child: FloatingActionButton(
                 onPressed: _updateLocation,
-                child: Icon(Icons.my_location),
+                child: const Icon(Icons.my_location),
               ),
             ),
             Positioned(
@@ -211,7 +279,7 @@ class _MapScreenState extends State<MapScreen> {
               right: 16,
               child: FloatingActionButton(
                 onPressed: _toggleFilters,
-                child: Icon(Icons.filter_list),
+                child: const Icon(Icons.filter_list),
               ),
             ),
           ],
