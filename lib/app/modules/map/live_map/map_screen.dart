@@ -26,7 +26,7 @@ class _MapScreenState extends State<MapScreen> {
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
   String erro = '';
-  bool _horario24h = false;
+  bool diaTodo = false;
   Map<String, bool> tiposSelecionados = {
     'Mulher': false,
     'Idoso': false,
@@ -81,7 +81,7 @@ class _MapScreenState extends State<MapScreen> {
                 icon: Icon(
                   Icons.shield,
                   color: Theme.of(context).colorScheme.primary,
-                  size: 40,
+                  size: 20,
                 ),
                 onPressed: () {
                   showModalBottomSheet(
@@ -171,33 +171,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  // void _showDelegaciaInfo(Delegacia delegacia) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (ctx) {
-  //       return Container(
-  //         padding: EdgeInsets.all(16),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Text(
-  //               delegacia.nome,
-  //               style: const TextStyle(
-  //                 fontWeight: FontWeight.bold,
-  //                 fontSize: 18,
-  //               ),
-  //             ),
-  //             SizedBox(height: 8),
-  //             Text("Endereço: ${delegacia.endereco}"),
-  //             Text("Horário de funcionamento: ${delegacia.horario24h}"),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -251,10 +224,10 @@ class _MapScreenState extends State<MapScreen> {
                   const SizedBox(height: 20),
                   SwitchListTile(
                     title: const Text('Delegacias 24h'),
-                    value: _horario24h,
+                    value: diaTodo,
                     onChanged: (bool value) {
                       setState(() {
-                        _horario24h = value;
+                        diaTodo = value;
                       });
                     },
                   ),
@@ -286,7 +259,6 @@ class _MapScreenState extends State<MapScreen> {
                       });
                     },
                   ),
-                  // Outros filtros aqui...
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -311,6 +283,8 @@ class _MapScreenState extends State<MapScreen> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             textStyle: const TextStyle(
                                 color: Colors.white, fontSize: 16)),
                         child: const Text('Aplicar Filtros'),
@@ -330,26 +304,105 @@ class _MapScreenState extends State<MapScreen> {
     try {
       List<Delegacia> delegacias;
 
-      if (_horario24h) {
+      if (diaTodo) {
         delegacias = await _delegaciaService.getDelegacias24h(true);
+        setState(() {
+          _delegaciaMarkers = delegacias.map((delegacia) {
+            return Marker(
+              point: LatLng(delegacia.latitude, delegacia.longitude),
+              width: 40,
+              height: 40,
+              child: IconButton(
+                icon: Icon(
+                  Icons.shield_moon_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (ctx) {
+                      return FractionallySizedBox(
+                        widthFactor: 1.0,
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(delegacia.nome,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryContainer)),
+                              const SizedBox(height: 8),
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 4),
+                                  child: Text("Endereço: ${delegacia.endereco}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer))),
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 8),
+                                  child: Text(
+                                      "Horário de funcionamento: ${delegacia.diaTodo}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer))),
+                              Center(
+                                child: ElevatedButton.icon(
+                                  onPressed: () => _launchURL(delegacia.mapUrl),
+                                  icon: const Icon(Icons.map_rounded),
+                                  label: const Text('Abrir no Google Mapas'),
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 4,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
+                                    foregroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                    textStyle:
+                                        Theme.of(context).textTheme.labelLarge,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 28, vertical: 14),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          }).toList();
+        });
       } else {
         delegacias = await _delegaciaService.getDelegacias();
+        setState(() {
+          _loadDelegacias();
+        });
       }
-
-      setState(() {
-        _delegaciaMarkers = delegacias.map((delegacia) {
-          return Marker(
-            point: LatLng(delegacia.latitude, delegacia.longitude),
-            width: 40,
-            height: 40,
-            child: Icon(
-              Icons.shield_moon_outlined,
-              color: Theme.of(context).colorScheme.primary,
-              size: 40,
-            ),
-          );
-        }).toList();
-      });
     } catch (e) {
       print("Erro ao aplicar os filtros: $e");
       _showErrorDialog("Erro ao aplicar os filtros.");
@@ -358,36 +411,14 @@ class _MapScreenState extends State<MapScreen> {
 
   void _resetFilters() async {
     setState(() {
-      _horario24h = false;
+      diaTodo = false;
       tiposSelecionados = {
         'Mulher': false,
         'Idoso': false,
         'PCD': false,
       };
-      // Resetar outros filtros, se necessário
     });
-
-    try {
-      final delegacias = await _delegaciaService.getDelegacias();
-
-      setState(() {
-        _delegaciaMarkers = delegacias.map((delegacia) {
-          return Marker(
-            point: LatLng(delegacia.latitude, delegacia.longitude),
-            width: 40,
-            height: 40,
-            child: Icon(
-              Icons.shield,
-              color: Theme.of(context).colorScheme.primary,
-              size: 40,
-            ),
-          );
-        }).toList();
-      });
-    } catch (e) {
-      print("Erro ao resetar os filtros: $e");
-      _showErrorDialog("Erro ao resetar os filtros.");
-    }
+    _loadDelegacias();
   }
 
   @override
