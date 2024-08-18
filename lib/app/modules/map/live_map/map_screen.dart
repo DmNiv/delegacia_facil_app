@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:delegacia_facil_app/app/data/repositories/delegacia/delegacia_repository.dart';
 import 'package:delegacia_facil_app/app/data/repositories/location_service.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_view.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -31,6 +34,13 @@ class _MapScreenState extends State<MapScreen> {
     'Idoso': false,
     'PCD': false,
   };
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw 'Não foi possível abrir a URL: $url';
+    }
+  }
 
   @override
   void initState() {
@@ -79,7 +89,7 @@ class _MapScreenState extends State<MapScreen> {
                     context: context,
                     builder: (ctx) {
                       return FractionallySizedBox(
-                        widthFactor: 1.0,  // Define a largura para 100% da tela
+                        widthFactor: 1.0, // Define a largura para 100% da tela
                         child: Container(
                           padding: EdgeInsets.all(16),
                           child: Column(
@@ -95,7 +105,28 @@ class _MapScreenState extends State<MapScreen> {
                               ),
                               SizedBox(height: 8),
                               Text("Endereço: ${delegacia.endereco}"),
-                              Text("Horário de funcionamento: ${delegacia.horario24h}"),
+                              Text(
+                                  "Horário de funcionamento: ${delegacia.horario24h}"),
+                              Center(
+                                child: ElevatedButton.icon(
+                                  onPressed: () => _launchURL(mapsUrl),
+                                  icon: const Icon(Icons.map_rounded),
+                                  label: const Text('Abrir no Google Mapas'),
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 4,
+                                    backgroundColor: Colors.green[500],
+                                    foregroundColor: Colors.white,
+                                    textStyle: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 28, vertical: 14),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
