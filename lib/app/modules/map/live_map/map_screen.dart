@@ -69,6 +69,7 @@ class _MapScreenState extends State<MapScreen> {
     try {
       final delegacias = await _delegaciaService.getDelegacias();
 
+      // ignore: unnecessary_null_comparison
       if (delegacias != null && delegacias.isNotEmpty) {
         setState(() {
           _delegaciaMarkers = delegacias.map((delegacia) {
@@ -145,8 +146,8 @@ class _MapScreenState extends State<MapScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 28, vertical: 14),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                   ),
                                 ),
                               ),

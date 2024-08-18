@@ -1,4 +1,3 @@
-import "package:delegacia_facil_app/app/modules/user/user_login/login_screen.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 
@@ -20,15 +19,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   DateTime? _selectedDate;
 
   void SignUp() {
-    String name = _nameController.text;
-    String lastName = _lastNameController.text;
-    String email = _emailController.text;
-    String cellphoneNumber = _cellphoneNumberController.text;
-    String password = _passwordController.text;
-    String userGender = _selectedGender ?? "Não especificado";
-    String birthDate = _selectedDate != null
-        ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
-        : "Não especificado";
+    // String name = _nameController.text;
+    // String lastName = _lastNameController.text;
+    // String email = _emailController.text;
+    // String cellphoneNumber = _cellphoneNumberController.text;
+    // String password = _passwordController.text;
+    // String userGender = _selectedGender ?? "Não especificado";
+    // String birthDate = _selectedDate != null
+    //     ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
+    //     : "Não especificado";
 
     Navigator.pushNamedAndRemoveUntil(
       context,

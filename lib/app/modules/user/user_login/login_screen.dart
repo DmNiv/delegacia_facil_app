@@ -1,6 +1,4 @@
 import "dart:ui";
-
-import "package:delegacia_facil_app/app/modules/map/live_map/map_screen.dart";
 import "package:flutter/material.dart";
 
 class LoginScreen extends StatefulWidget {
