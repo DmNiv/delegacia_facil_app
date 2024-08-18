@@ -21,7 +21,7 @@ class _MapScreenState extends State<MapScreen> {
   final LocationService _locationService = LocationService();
   final apiClient = DelegaciaFacilApiClient();
   final DelegaciaRepository _delegaciaService =
-      DelegaciaRepository.defaultClient();
+  DelegaciaRepository.defaultClient();
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
   String erro = '';
@@ -68,9 +68,9 @@ class _MapScreenState extends State<MapScreen> {
               point: LatLng(delegacia.latitude, delegacia.longitude),
               width: 40,
               height: 40,
-              child: const Icon(
-                Icons.local_police_rounded,
-                color: Colors.red,
+              child: Icon(
+                Icons.shield,
+                color: Theme.of(context).colorScheme.primary,
                 size: 40,
               ),
             );
@@ -183,10 +183,11 @@ class _MapScreenState extends State<MapScreen> {
                           _resetFilters();
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Remover Filtros'),
                         style: TextButton.styleFrom(
                             textStyle: TextStyle(
-                                color: Colors.deepPurple, fontSize: 16)),
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16)),
+                        child: const Text('Remover Filtros'),
                       ),
                       const SizedBox(width: 20),
                       ElevatedButton(
@@ -195,9 +196,10 @@ class _MapScreenState extends State<MapScreen> {
                           Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
+                            backgroundColor:
+                            Theme.of(context).colorScheme.primary,
                             textStyle:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                            TextStyle(color: Colors.white, fontSize: 16)),
                         child: const Text('Aplicar Filtros'),
                       ),
                     ],
@@ -227,9 +229,9 @@ class _MapScreenState extends State<MapScreen> {
             point: LatLng(delegacia.latitude, delegacia.longitude),
             width: 40,
             height: 40,
-            child: const Icon(
-              Icons.local_police_rounded,
-              color: Colors.red,
+            child: Icon(
+              Icons.shield_moon_outlined,
+              color: Theme.of(context).colorScheme.primary,
               size: 40,
             ),
           );
@@ -261,9 +263,9 @@ class _MapScreenState extends State<MapScreen> {
             point: LatLng(delegacia.latitude, delegacia.longitude),
             width: 40,
             height: 40,
-            child: const Icon(
+            child: Icon(
               Icons.local_police_rounded,
-              color: Colors.red,
+              color: Theme.of(context).colorScheme.primary,
               size: 40,
             ),
           );
@@ -313,45 +315,45 @@ class _MapScreenState extends State<MapScreen> {
             Center(
               child: _currentPosition == null
                   ? Center(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 20),
-                        Text(erro)
-                      ],
-                    ))
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 20),
+                      Text(erro)
+                    ],
+                  ))
                   : FlutterMap(
-                      mapController: _mapController,
-                      options: MapOptions(
-                          initialCenter: LatLng(
-                            _currentPosition!.latitude,
-                            _currentPosition!.longitude,
-                          ),
-                          initialZoom: 18,
-                          initialRotation: 0.0,
-                          interactionOptions: const InteractionOptions(
-                            flags:
-                                InteractiveFlag.all & ~InteractiveFlag.rotate,
-                          )),
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-                          subdomains: const ['a', 'b', 'c', 'd'],
-                          retinaMode: true,
-                        ),
-                        CurrentLocationLayer(
-                          style: const LocationMarkerStyle(
-                              marker: DefaultLocationMarker(
-                                color: Colors.blue,
-                              ),
-                              markerSize: Size(30, 30),
-                              headingSectorRadius: 40),
-                        ),
-                        MarkerLayer(markers: _delegaciaMarkers),
-                      ],
+                mapController: _mapController,
+                options: MapOptions(
+                    initialCenter: LatLng(
+                      _currentPosition!.latitude,
+                      _currentPosition!.longitude,
                     ),
+                    initialZoom: 18,
+                    initialRotation: 0.0,
+                    interactionOptions: const InteractionOptions(
+                      flags:
+                      InteractiveFlag.all & ~InteractiveFlag.rotate,
+                    )),
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                    subdomains: const ['a', 'b', 'c', 'd'],
+                    retinaMode: true,
+                  ),
+                  CurrentLocationLayer(
+                    style: const LocationMarkerStyle(
+                        marker: DefaultLocationMarker(
+                          color: Colors.blue,
+                        ),
+                        markerSize: Size(30, 30),
+                        headingSectorRadius: 40),
+                  ),
+                  MarkerLayer(markers: _delegaciaMarkers),
+                ],
+              ),
             ),
           ],
         ),
