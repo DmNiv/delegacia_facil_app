@@ -50,12 +50,12 @@ class ProfileData extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8),
         child: Text(title,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.w600)),
       ),
       subtitle: Text(subtitle,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.secondary,
               fontWeight: FontWeight.w600)),
     );
   }
