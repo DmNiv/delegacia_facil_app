@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:delegacia_facil_app/app/data/repositories/delegacia/delegacia_repository.dart';
 import 'package:delegacia_facil_app/app/data/repositories/location_service.dart';
@@ -88,24 +87,46 @@ class _MapScreenState extends State<MapScreen> {
                     context: context,
                     builder: (ctx) {
                       return FractionallySizedBox(
-                        widthFactor: 1.0, // Define a largura para 100% da tela
+                        widthFactor: 1.0,
                         child: Container(
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                delegacia.nome,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text("Endereço: ${delegacia.endereco}"),
-                              Text(
-                                  "Horário de funcionamento: ${delegacia.diaTodo}"),
+                              Text(delegacia.nome,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryContainer)),
+                              const SizedBox(height: 8),
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 4),
+                                  child: Text("Endereço: ${delegacia.endereco}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer))),
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 8),
+                                  child: Text(
+                                      "Horário de funcionamento: ${delegacia.diaTodo}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer))),
                               Center(
                                 child: ElevatedButton.icon(
                                   onPressed: () => _launchURL(delegacia.mapUrl),
@@ -113,11 +134,14 @@ class _MapScreenState extends State<MapScreen> {
                                   label: const Text('Abrir no Google Mapas'),
                                   style: ElevatedButton.styleFrom(
                                     elevation: 4,
-                                    backgroundColor: Colors.green[500],
-                                    foregroundColor: Colors.white,
-                                    textStyle: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
+                                    foregroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                    textStyle:
+                                        Theme.of(context).textTheme.labelLarge,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 28, vertical: 14),
                                     shape: RoundedRectangleBorder(
@@ -233,7 +257,7 @@ class _MapScreenState extends State<MapScreen> {
                       });
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                   CheckboxListTile(
                     title: const Text('Delegacia da Mulher'),
                     value: tiposSelecionados['Mulher'],
@@ -286,8 +310,8 @@ class _MapScreenState extends State<MapScreen> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
-                            textStyle:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                            textStyle: const TextStyle(
+                                color: Colors.white, fontSize: 16)),
                         child: const Text('Aplicar Filtros'),
                       ),
                     ],
