@@ -30,20 +30,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
         : "Não especificado";
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/',
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios_new),
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        title: const Text(
+        title: Text(
           "Delegacia Fácil",
           style: TextStyle(
-              color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w500),
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.w500,
+              fontSize: 28.8),
         ),
       ),
       body: SingleChildScrollView(
@@ -54,13 +66,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
+                  Text(
                     "Cadastro",
-                    style: TextStyle(
-                      color: Colors.deepPurple,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 28.0,
-                    ),
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
@@ -70,16 +80,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: TextField(
                           controller: _nameController,
                           decoration: const InputDecoration(
-                              labelText: "Primeiro nome:",
-                              border: OutlineInputBorder()),
+                              labelText: "Nome", border: OutlineInputBorder()),
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Expanded(
                         child: TextField(
                           controller: _lastNameController,
                           decoration: const InputDecoration(
-                              labelText: "Sobrenome:",
+                              labelText: "Sobrenome",
                               border: OutlineInputBorder()),
                         ),
                       ),
@@ -103,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     child: InputDecorator(
                       decoration: const InputDecoration(
-                          labelText: "Data de nascimento:",
+                          labelText: "Data de nascimento",
                           border: OutlineInputBorder()),
                       child: Text(
                         _selectedDate != null
@@ -146,28 +155,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 20),
                   TextField(
                     controller: _cellphoneNumberController,
+                    keyboardType: TextInputType.numberWithOptions(),
                     decoration: const InputDecoration(
-                        labelText: "Número de Celular:",
-                        border: OutlineInputBorder()),
+                        labelText: "Celular", border: OutlineInputBorder()),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: _emailController,
                     decoration: const InputDecoration(
-                        labelText: "Email:", border: OutlineInputBorder()),
+                        labelText: "Email", border: OutlineInputBorder()),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: _passwordController,
                     decoration: const InputDecoration(
-                      labelText: "Senha:",
+                      labelText: "Senha",
                       border: OutlineInputBorder(),
                     ),
                     obscureText: true,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   ElevatedButton(
-                      onPressed: SignUp, child: const Text("Sign Up"))
+                      onPressed: SignUp,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondaryContainer,
+                      ),
+                      child: Text("Cadastrar",
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                    fontWeight: FontWeight.bold,
+                                  )))
                 ],
               ),
             )),
