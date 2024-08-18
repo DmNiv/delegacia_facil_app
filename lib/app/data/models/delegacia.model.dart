@@ -1,5 +1,5 @@
 class Delegacia {
-  final int id;
+  final String id;
   final String nome;
   final String endereco;
   final bool horario24h;
