@@ -29,7 +29,7 @@ class DelegaciaRepository implements IDelegaciaRepository {
   Future<List<Delegacia>> getDelegacias24h(bool diaTodo) async {
     const baseUrl =
         'https://a09d-2804-14c-598f-89b1-1cd6-eaec-7c9d-f02b.ngrok-free.app/api/v1/delegacias';
-    final url = '$baseUrl/filtro?dia_todo=$diaTodo';
+    final url = '$baseUrl/filtro?diaTodo=$diaTodo';
     final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
 
     try {
