@@ -83,24 +83,26 @@ class _MapScreenState extends State<MapScreen> {
                       return FractionallySizedBox(
                         widthFactor: 1.0,
                         child: Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(20),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(delegacia.nome,
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimaryContainer)),
-                              const SizedBox(height: 8),
+                              Center(
+                                child: Text(delegacia.nome,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimaryContainer)),
+                              ),
+                              const Divider(),
                               Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, bottom: 4),
+                                  padding: const EdgeInsets.only(
+                                      left: 12, bottom: 12),
                                   child: Text("Endereço: ${delegacia.endereco}",
                                       style: Theme.of(context)
                                           .textTheme
@@ -110,17 +112,27 @@ class _MapScreenState extends State<MapScreen> {
                                                   .colorScheme
                                                   .onPrimaryContainer))),
                               Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, bottom: 8),
-                                  child: Text(
-                                      "Horário de funcionamento: ${delegacia.diaTodo}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimaryContainer))),
+                                padding:
+                                    const EdgeInsets.only(left: 12, bottom: 12),
+                                child: delegacia.diaTodo == true
+                                    ? Text("Horário de funcionamento: 24H",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer))
+                                    : Text(
+                                        "Horário de funcionamento: 08H - 18H",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer)),
+                              ),
                               Center(
                                 child: ElevatedButton.icon(
                                   onPressed: () => _launchURL(delegacia.mapUrl),
@@ -198,7 +210,7 @@ class _MapScreenState extends State<MapScreen> {
   void _toggleFilters() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -210,13 +222,24 @@ class _MapScreenState extends State<MapScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'Filtros',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
+                  Text('Filtros',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge!
+                          .copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer)),
                   const SizedBox(height: 20),
                   SwitchListTile(
-                    title: const Text('Delegacias 24h'),
+                    title: Text('Delegacias 24h',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                     value: diaTodo,
                     onChanged: (bool value) {
                       setState(() {
@@ -226,7 +249,14 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                   const Divider(),
                   CheckboxListTile(
-                    title: const Text('Delegacia da Mulher'),
+                    title: Text('Delegacia da Mulher',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                     value: tiposSelecionados['Mulher'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -235,7 +265,14 @@ class _MapScreenState extends State<MapScreen> {
                     },
                   ),
                   CheckboxListTile(
-                    title: const Text('Delegacia do Idoso'),
+                    title: Text('Delegacia do Idoso',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                     value: tiposSelecionados['Idoso'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -244,7 +281,14 @@ class _MapScreenState extends State<MapScreen> {
                     },
                   ),
                   CheckboxListTile(
-                    title: const Text('Delegacia PCD'),
+                    title: Text('Delegacia PCD',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer)),
                     value: tiposSelecionados['PCD'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -262,9 +306,12 @@ class _MapScreenState extends State<MapScreen> {
                           Navigator.of(context).pop();
                         },
                         style: TextButton.styleFrom(
-                            textStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 16)),
+                            foregroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(fontWeight: FontWeight.bold)),
                         child: const Text('Remover Filtros'),
                       ),
                       const SizedBox(width: 20),
@@ -278,8 +325,10 @@ class _MapScreenState extends State<MapScreen> {
                                 Theme.of(context).colorScheme.primary,
                             foregroundColor:
                                 Theme.of(context).colorScheme.onPrimary,
-                            textStyle: const TextStyle(
-                                color: Colors.white, fontSize: 16)),
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(fontWeight: FontWeight.bold)),
                         child: const Text('Aplicar Filtros'),
                       ),
                     ],
@@ -330,19 +379,21 @@ class _MapScreenState extends State<MapScreen> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(delegacia.nome,
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimaryContainer)),
-                              const SizedBox(height: 8),
+                              Center(
+                                child: Text(delegacia.nome,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimaryContainer)),
+                              ),
+                              const Divider(),
                               Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, bottom: 4),
+                                  padding: const EdgeInsets.only(
+                                      left: 12, bottom: 12),
                                   child: Text("Endereço: ${delegacia.endereco}",
                                       style: Theme.of(context)
                                           .textTheme
@@ -352,17 +403,27 @@ class _MapScreenState extends State<MapScreen> {
                                                   .colorScheme
                                                   .onPrimaryContainer))),
                               Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, bottom: 8),
-                                  child: Text(
-                                      "Horário de funcionamento: ${delegacia.diaTodo}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimaryContainer))),
+                                padding:
+                                    const EdgeInsets.only(left: 12, bottom: 12),
+                                child: delegacia.diaTodo == true
+                                    ? Text("Horário de funcionamento: 24H",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer))
+                                    : Text(
+                                        "Horário de funcionamento: 08H - 18H",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer)),
+                              ),
                               Center(
                                 child: ElevatedButton.icon(
                                   onPressed: () => _launchURL(delegacia.mapUrl),
