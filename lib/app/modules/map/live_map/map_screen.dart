@@ -11,7 +11,6 @@ import 'package:delegacia_facil_app/app/data/repositories/location_service.dart'
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
@@ -106,10 +105,10 @@ class _MapScreenState extends State<MapScreen> {
                               SizedBox(height: 8),
                               Text("Endereço: ${delegacia.endereco}"),
                               Text(
-                                  "Horário de funcionamento: ${delegacia.horario24h}"),
+                                  "Horário de funcionamento: ${delegacia.diaTodo}"),
                               Center(
                                 child: ElevatedButton.icon(
-                                  onPressed: () => _launchURL(mapsUrl),
+                                  onPressed: () => _launchURL(delegacia.mapUrl),
                                   icon: const Icon(Icons.map_rounded),
                                   label: const Text('Abrir no Google Mapas'),
                                   style: ElevatedButton.styleFrom(
