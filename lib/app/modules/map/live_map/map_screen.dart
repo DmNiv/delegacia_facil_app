@@ -310,7 +310,7 @@ class _MapScreenState extends State<MapScreen> {
                                 Theme.of(context).colorScheme.primary,
                             textStyle: Theme.of(context)
                                 .textTheme
-                                .titleMedium!
+                                .titleSmall!
                                 .copyWith(fontWeight: FontWeight.bold)),
                         child: const Text('Remover Filtros'),
                       ),
@@ -327,7 +327,7 @@ class _MapScreenState extends State<MapScreen> {
                                 Theme.of(context).colorScheme.onPrimary,
                             textStyle: Theme.of(context)
                                 .textTheme
-                                .titleMedium!
+                                .titleSmall!
                                 .copyWith(fontWeight: FontWeight.bold)),
                         child: const Text('Aplicar Filtros'),
                       ),
