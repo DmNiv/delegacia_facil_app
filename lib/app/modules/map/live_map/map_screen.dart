@@ -21,7 +21,7 @@ class _MapScreenState extends State<MapScreen> {
   final LocationService _locationService = LocationService();
   final apiClient = DelegaciaFacilApiClient();
   final DelegaciaRepository _delegaciaService =
-  DelegaciaRepository.defaultClient();
+      DelegaciaRepository.defaultClient();
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
   String erro = '';
@@ -197,9 +197,9 @@ class _MapScreenState extends State<MapScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
-                            Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.primary,
                             textStyle:
-                            TextStyle(color: Colors.white, fontSize: 16)),
+                                TextStyle(color: Colors.white, fontSize: 16)),
                         child: const Text('Aplicar Filtros'),
                       ),
                     ],
@@ -281,24 +281,27 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              );
-            },
-            icon: const CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Text(
-                "AB",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 130, 105, 173),
-                  fontSize: 16,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
+                );
+              },
+              icon: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Text(
+                  "AB",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surfaceTint,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
           centerTitle: true,
           title: const Text(
             'DelegaciaFácil',
@@ -315,45 +318,45 @@ class _MapScreenState extends State<MapScreen> {
             Center(
               child: _currentPosition == null
                   ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const CircularProgressIndicator(),
-                      const SizedBox(height: 20),
-                      Text(erro)
-                    ],
-                  ))
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 20),
+                        Text(erro)
+                      ],
+                    ))
                   : FlutterMap(
-                mapController: _mapController,
-                options: MapOptions(
-                    initialCenter: LatLng(
-                      _currentPosition!.latitude,
-                      _currentPosition!.longitude,
-                    ),
-                    initialZoom: 18,
-                    initialRotation: 0.0,
-                    interactionOptions: const InteractionOptions(
-                      flags:
-                      InteractiveFlag.all & ~InteractiveFlag.rotate,
-                    )),
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-                    subdomains: const ['a', 'b', 'c', 'd'],
-                    retinaMode: true,
-                  ),
-                  CurrentLocationLayer(
-                    style: const LocationMarkerStyle(
-                        marker: DefaultLocationMarker(
-                          color: Colors.blue,
+                      mapController: _mapController,
+                      options: MapOptions(
+                          initialCenter: LatLng(
+                            _currentPosition!.latitude,
+                            _currentPosition!.longitude,
+                          ),
+                          initialZoom: 18,
+                          initialRotation: 0.0,
+                          interactionOptions: const InteractionOptions(
+                            flags:
+                                InteractiveFlag.all & ~InteractiveFlag.rotate,
+                          )),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                          subdomains: const ['a', 'b', 'c', 'd'],
+                          retinaMode: true,
                         ),
-                        markerSize: Size(30, 30),
-                        headingSectorRadius: 40),
-                  ),
-                  MarkerLayer(markers: _delegaciaMarkers),
-                ],
-              ),
+                        CurrentLocationLayer(
+                          style: const LocationMarkerStyle(
+                              marker: DefaultLocationMarker(
+                                color: Colors.blue,
+                              ),
+                              markerSize: Size(30, 30),
+                              headingSectorRadius: 40),
+                        ),
+                        MarkerLayer(markers: _delegaciaMarkers),
+                      ],
+                    ),
             ),
           ],
         ),
