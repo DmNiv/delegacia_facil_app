@@ -68,10 +68,41 @@ class _MapScreenState extends State<MapScreen> {
               point: LatLng(delegacia.latitude, delegacia.longitude),
               width: 40,
               height: 40,
-              child: Icon(
-                Icons.shield,
-                color: Theme.of(context).colorScheme.primary,
-                size: 40,
+              child: IconButton(
+                icon: Icon(
+                  Icons.shield,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 40,
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (ctx) {
+                      return FractionallySizedBox(
+                        widthFactor: 1.0,  // Define a largura para 100% da tela
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                delegacia.nome,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text("Endereço: ${delegacia.endereco}"),
+                              Text("Horário de funcionamento: ${delegacia.horario24h}"),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             );
           }).toList();
@@ -84,6 +115,33 @@ class _MapScreenState extends State<MapScreen> {
       _showErrorDialog("Erro ao carregar as delegacias.");
     }
   }
+
+  // void _showDelegaciaInfo(Delegacia delegacia) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (ctx) {
+  //       return Container(
+  //         padding: EdgeInsets.all(16),
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               delegacia.nome,
+  //               style: const TextStyle(
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 18,
+  //               ),
+  //             ),
+  //             SizedBox(height: 8),
+  //             Text("Endereço: ${delegacia.endereco}"),
+  //             Text("Horário de funcionamento: ${delegacia.horario24h}"),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -264,7 +322,7 @@ class _MapScreenState extends State<MapScreen> {
             width: 40,
             height: 40,
             child: Icon(
-              Icons.local_police_rounded,
+              Icons.shield,
               color: Theme.of(context).colorScheme.primary,
               size: 40,
             ),
