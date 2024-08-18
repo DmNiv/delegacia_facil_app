@@ -56,25 +56,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
+        ),
+        title: Text(
+          "Editar Perfil",
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.w500,
+              fontSize: 28.8),
         ),
         centerTitle: true,
-        title: const Text(
-          'Editar Perfil',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 28.0,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
       ),
       body: Form(
         key: _formKey,
@@ -82,15 +81,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: <Widget>[
             Container(
               height: 160,
-              decoration: const BoxDecoration(color: Colors.deepPurple),
-              child: const Center(
+              decoration:
+                  BoxDecoration(color: Theme.of(context).colorScheme.primary),
+              child: Center(
                 child: CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary,
                   radius: 60.0,
                   child: Text(
                     "AB",
                     style: TextStyle(
-                      color: Color.fromARGB(255, 104, 84, 139),
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 56,
                     ),
                   ),
@@ -103,28 +103,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextFormField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(
-                        labelText: "Nome", border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu primeiro nome';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(
-                        labelText: "Sobrenome", border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu sobrenome';
-                      }
-                      return null;
-                    },
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _firstNameController,
+                          decoration: const InputDecoration(
+                              labelText: "Nome", border: OutlineInputBorder()),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, insira seu primeiro nome';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _lastNameController,
+                          decoration: const InputDecoration(
+                              labelText: "Sobrenome",
+                              border: OutlineInputBorder()),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, insira seu sobrenome';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -143,26 +152,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    value: _selectedGender,
+                  TextFormField(
+                    controller: _phoneController,
                     decoration: const InputDecoration(
-                      labelText: 'Sexo',
+                      labelText: 'Telefone',
                       border: OutlineInputBorder(),
                     ),
-                    items: ['Masculino', 'Feminino', 'Outro']
-                        .map((label) => DropdownMenuItem(
-                              value: label,
-                              child: Text(label),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedGender = value;
-                      });
-                    },
+                    keyboardType: TextInputType.phone,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, selecione seu sexo';
+                        return 'Por favor, insira seu telefone';
                       }
                       return null;
                     },
@@ -186,16 +185,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _phoneController,
+                  DropdownButtonFormField<String>(
+                    value: _selectedGender,
                     decoration: const InputDecoration(
-                      labelText: 'Telefone',
+                      labelText: 'Gênero',
                       border: OutlineInputBorder(),
                     ),
-                    keyboardType: TextInputType.phone,
+                    items: ['Masculino', 'Feminino', 'Outro']
+                        .map((label) => DropdownMenuItem(
+                              value: label,
+                              child: Text(label),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu telefone';
+                        return 'Por favor, selecione seu sexo';
                       }
                       return null;
                     },

@@ -12,49 +12,51 @@ class ProfileData extends StatelessWidget {
     return Column(
       children: [
         _buildListTile(
-          title: 'Nome',
-          subtitle: 'profile.name profile.surname',
-        ),
+            context: context, title: 'Nome', subtitle: 'Name Sobrenome'),
         const Divider(),
         _buildListTile(
+          context: context,
           title: 'Email',
-          subtitle: 'profile.email',
+          subtitle: 'email@email.com',
         ),
         const Divider(),
         _buildListTile(
+          context: context,
           title: 'Telefone',
-          subtitle: 'profile.phone',
+          subtitle: '(91) 99999-9999',
         ),
         const Divider(),
         _buildListTile(
+          context: context,
           title: 'Data de Nascimento',
-          subtitle: 'profile.dateOfBith',
+          subtitle: '01/01/1990',
         ),
         const Divider(),
         _buildListTile(
-          title: 'Sexo',
-          subtitle: 'profile.gender',
+          context: context,
+          title: 'Gênero',
+          subtitle: 'Gênero',
         ),
       ],
     );
   }
 
-  ListTile _buildListTile({required String title, required String subtitle}) {
+  ListTile _buildListTile(
+      {required BuildContext context,
+      required String title,
+      required String subtitle}) {
     return ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(
-          color: Colors.deepPurple,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Text(title,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+                fontWeight: FontWeight.w600)),
       ),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(
-          fontSize: 18,
-        ),
-      ),
+      subtitle: Text(subtitle,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontWeight: FontWeight.w600)),
     );
   }
 

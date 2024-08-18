@@ -30,7 +30,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
         : "Não especificado";
 
-    Navigator.pushReplacementNamed(context, "/home");
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/',
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override

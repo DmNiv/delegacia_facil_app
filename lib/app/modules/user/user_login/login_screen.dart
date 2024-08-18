@@ -21,7 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Usuário: $username");
     print("Senha: $password");
 
-    Navigator.pushNamed(context, "/home");
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/home',
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
