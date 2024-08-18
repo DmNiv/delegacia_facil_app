@@ -33,13 +33,6 @@ class _MapScreenState extends State<MapScreen> {
     'PCD': false,
   };
 
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri)) {
-      throw 'Não foi possível abrir a URL: $url';
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -300,6 +293,13 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw 'Não foi possível abrir a URL: $url';
+    }
+  }
+
   Future<void> _applyFilters() async {
     try {
       List<Delegacia> delegacias;
@@ -399,9 +399,7 @@ class _MapScreenState extends State<MapScreen> {
         });
       } else {
         delegacias = await _delegaciaService.getDelegacias();
-        setState(() {
-          _loadDelegacias();
-        });
+        _loadDelegacias();
       }
     } catch (e) {
       print("Erro ao aplicar os filtros: $e");
@@ -435,11 +433,11 @@ class _MapScreenState extends State<MapScreen> {
                 );
               },
               icon: CircleAvatar(
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 child: Text(
                   "AB",
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.surfaceTint,
+                    color: Theme.of(context).colorScheme.primary,
                     fontSize: 16,
                   ),
                 ),
@@ -447,15 +445,15 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ],
           centerTitle: true,
-          title: const Text(
+          title: Text(
             'DelegaciaFácil',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               fontSize: 28.0,
               fontWeight: FontWeight.w500,
             ),
           ),
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
         body: Stack(
           children: [
@@ -463,13 +461,12 @@ class _MapScreenState extends State<MapScreen> {
               child: _currentPosition == null
                   ? Center(
                       child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 20),
-                        Text(erro)
-                      ],
-                    ))
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          const CircularProgressIndicator(),
+                          const SizedBox(height: 20),
+                          Text(erro)
+                        ]))
                   : FlutterMap(
                       mapController: _mapController,
                       options: MapOptions(
