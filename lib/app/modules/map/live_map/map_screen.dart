@@ -33,6 +33,13 @@ class _MapScreenState extends State<MapScreen> {
     'PCD': false,
   };
 
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw 'Não foi possível abrir a URL: $url';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +62,35 @@ class _MapScreenState extends State<MapScreen> {
     } catch (e) {
       erro = e.toString();
       print('Erro ao obter a localização: $e');
+    }
+  }
+
+  Future<void> _ligarDelegacia(String telefone) async {
+    if (telefone.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Erro'),
+            content: Text("A Delegacia selecionada não possui número."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    telefone = "+55" + telefone;
+    final Uri url = Uri(scheme: 'tel', path: telefone);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      print("Não foi possível abrir o discador");
     }
   }
 
@@ -83,26 +119,24 @@ class _MapScreenState extends State<MapScreen> {
                       return FractionallySizedBox(
                         widthFactor: 1.0,
                         child: Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Center(
-                                child: Text(delegacia.nome,
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimaryContainer)),
-                              ),
-                              const Divider(),
+                              Text(delegacia.nome,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryContainer)),
+                              const SizedBox(height: 8),
                               Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 12, bottom: 12),
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 4),
                                   child: Text("Endereço: ${delegacia.endereco}",
                                       style: Theme.of(context)
                                           .textTheme
@@ -112,27 +146,43 @@ class _MapScreenState extends State<MapScreen> {
                                                   .colorScheme
                                                   .onPrimaryContainer))),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 12, bottom: 12),
-                                child: delegacia.diaTodo == true
-                                    ? Text("Horário de funcionamento: 24H",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimaryContainer))
-                                    : Text(
-                                        "Horário de funcionamento: 08H - 18H",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimaryContainer)),
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 8),
+                                  child: Text(
+                                      "Horário de funcionamento: ${delegacia.diaTodo}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer))),
+                              Center(
+                                child: ElevatedButton.icon(
+                                  icon: Icon(Icons.phone),
+                                  label: Text("Ligar"),
+                                  onPressed: () {
+                                    _ligarDelegacia(delegacia.telefone);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 4,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
+                                    foregroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                    textStyle:
+                                    Theme.of(context).textTheme.labelLarge,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 7),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(10)),
+                                  ),
+                                ),
                               ),
+                              const SizedBox(height: 8),
                               Center(
                                 child: ElevatedButton.icon(
                                   onPressed: () => _launchURL(delegacia.mapUrl),
@@ -210,7 +260,7 @@ class _MapScreenState extends State<MapScreen> {
   void _toggleFilters() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: Colors.grey[200],
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -222,24 +272,13 @@ class _MapScreenState extends State<MapScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Filtros',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge!
-                          .copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer)),
+                  const Text(
+                    'Filtros',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 20),
                   SwitchListTile(
-                    title: Text('Delegacias 24h',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer)),
+                    title: const Text('Delegacias 24h'),
                     value: diaTodo,
                     onChanged: (bool value) {
                       setState(() {
@@ -249,14 +288,7 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                   const Divider(),
                   CheckboxListTile(
-                    title: Text('Delegacia da Mulher',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer)),
+                    title: const Text('Delegacia da Mulher'),
                     value: tiposSelecionados['Mulher'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -265,14 +297,7 @@ class _MapScreenState extends State<MapScreen> {
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('Delegacia do Idoso',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer)),
+                    title: const Text('Delegacia do Idoso'),
                     value: tiposSelecionados['Idoso'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -281,14 +306,7 @@ class _MapScreenState extends State<MapScreen> {
                     },
                   ),
                   CheckboxListTile(
-                    title: Text('Delegacia PCD',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer)),
+                    title: const Text('Delegacia PCD'),
                     value: tiposSelecionados['PCD'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -306,12 +324,9 @@ class _MapScreenState extends State<MapScreen> {
                           Navigator.of(context).pop();
                         },
                         style: TextButton.styleFrom(
-                            foregroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            textStyle: Theme.of(context)
-                                .textTheme
-                                .titleSmall!
-                                .copyWith(fontWeight: FontWeight.bold)),
+                            textStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16)),
                         child: const Text('Remover Filtros'),
                       ),
                       const SizedBox(width: 20),
@@ -325,10 +340,8 @@ class _MapScreenState extends State<MapScreen> {
                                 Theme.of(context).colorScheme.primary,
                             foregroundColor:
                                 Theme.of(context).colorScheme.onPrimary,
-                            textStyle: Theme.of(context)
-                                .textTheme
-                                .titleSmall!
-                                .copyWith(fontWeight: FontWeight.bold)),
+                            textStyle: const TextStyle(
+                                color: Colors.white, fontSize: 16)),
                         child: const Text('Aplicar Filtros'),
                       ),
                     ],
@@ -340,13 +353,6 @@ class _MapScreenState extends State<MapScreen> {
         );
       },
     );
-  }
-
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri)) {
-      throw 'Não foi possível abrir a URL: $url';
-    }
   }
 
   Future<void> _applyFilters() async {
@@ -379,21 +385,19 @@ class _MapScreenState extends State<MapScreen> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Center(
-                                child: Text(delegacia.nome,
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimaryContainer)),
-                              ),
-                              const Divider(),
+                              Text(delegacia.nome,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryContainer)),
+                              const SizedBox(height: 8),
                               Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 12, bottom: 12),
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 4),
                                   child: Text("Endereço: ${delegacia.endereco}",
                                       style: Theme.of(context)
                                           .textTheme
@@ -403,27 +407,43 @@ class _MapScreenState extends State<MapScreen> {
                                                   .colorScheme
                                                   .onPrimaryContainer))),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 12, bottom: 12),
-                                child: delegacia.diaTodo == true
-                                    ? Text("Horário de funcionamento: 24H",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimaryContainer))
-                                    : Text(
-                                        "Horário de funcionamento: 08H - 18H",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimaryContainer)),
+                                  padding:
+                                      const EdgeInsets.only(left: 8, bottom: 8),
+                                  child: Text(
+                                      "Horário de funcionamento: ${delegacia.diaTodo}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimaryContainer))),
+                              Center(
+                                child: ElevatedButton.icon(
+                                  icon: Icon(Icons.phone),
+                                  label: Text("Ligar"),
+                                  onPressed: () {
+                                    _ligarDelegacia(delegacia.telefone);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 4,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondaryContainer,
+                                    foregroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                                    textStyle:
+                                    Theme.of(context).textTheme.labelLarge,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 7),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(10)),
+                                  ),
+                                ),
                               ),
+                              const SizedBox(height: 8),
                               Center(
                                 child: ElevatedButton.icon(
                                   onPressed: () => _launchURL(delegacia.mapUrl),
@@ -460,7 +480,9 @@ class _MapScreenState extends State<MapScreen> {
         });
       } else {
         delegacias = await _delegaciaService.getDelegacias();
-        _loadDelegacias();
+        setState(() {
+          _loadDelegacias();
+        });
       }
     } catch (e) {
       print("Erro ao aplicar os filtros: $e");
@@ -494,11 +516,11 @@ class _MapScreenState extends State<MapScreen> {
                 );
               },
               icon: CircleAvatar(
-                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                backgroundColor: Colors.white,
                 child: Text(
                   "AB",
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.surfaceTint,
                     fontSize: 16,
                   ),
                 ),
@@ -506,15 +528,15 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ],
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'DelegaciaFácil',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Colors.white,
               fontSize: 28.0,
               fontWeight: FontWeight.w500,
             ),
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Colors.deepPurple,
         ),
         body: Stack(
           children: [
@@ -522,12 +544,13 @@ class _MapScreenState extends State<MapScreen> {
               child: _currentPosition == null
                   ? Center(
                       child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                          const CircularProgressIndicator(),
-                          const SizedBox(height: 20),
-                          Text(erro)
-                        ]))
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 20),
+                        Text(erro)
+                      ],
+                    ))
                   : FlutterMap(
                       mapController: _mapController,
                       options: MapOptions(
