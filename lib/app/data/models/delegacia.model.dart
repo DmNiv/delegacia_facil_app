@@ -6,16 +6,17 @@ class Delegacia {
   final double latitude;
   final double longitude;
   final String mapUrl;
+  final String telefone;
 
-  Delegacia({
-    required this.id,
-    required this.nome,
-    required this.endereco,
-    required this.diaTodo,
-    required this.latitude,
-    required this.longitude,
-    required this.mapUrl
-  });
+  Delegacia(
+      {required this.id,
+      required this.nome,
+      required this.endereco,
+      required this.diaTodo,
+      required this.latitude,
+      required this.longitude,
+      required this.mapUrl,
+      required this.telefone});
 
   factory Delegacia.fromMap(Map<String, dynamic> map) {
     return Delegacia(
@@ -25,7 +26,8 @@ class Delegacia {
       diaTodo: map['diaTodo'],
       latitude: map['latitude'],
       longitude: map['longitude'],
-      mapUrl: map['mapUrl']
+      mapUrl: map['mapUrl'],
+      telefone: map['telefone'],
     );
   }
 }
