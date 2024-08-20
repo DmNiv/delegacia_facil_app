@@ -173,12 +173,12 @@ class _MapScreenState extends State<MapScreen> {
                                         .colorScheme
                                         .onSecondaryContainer,
                                     textStyle:
-                                    Theme.of(context).textTheme.labelLarge,
+                                        Theme.of(context).textTheme.labelLarge,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 14, vertical: 7),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(10)),
+                                            BorderRadius.circular(10)),
                                   ),
                                 ),
                               ),
@@ -434,12 +434,12 @@ class _MapScreenState extends State<MapScreen> {
                                         .colorScheme
                                         .onSecondaryContainer,
                                     textStyle:
-                                    Theme.of(context).textTheme.labelLarge,
+                                        Theme.of(context).textTheme.labelLarge,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 14, vertical: 7),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(10)),
+                                            BorderRadius.circular(10)),
                                   ),
                                 ),
                               ),
@@ -587,6 +587,16 @@ class _MapScreenState extends State<MapScreen> {
         ),
         floatingActionButton: Stack(
           children: [
+            Positioned(
+              top: 120,
+              right: 16,
+              child: FloatingActionButton(
+                onPressed: () {
+                  _launchURL("https://delegaciavirtual.pa.gov.br/#/");
+                },
+                child: const Icon(Icons.warning),
+              ),
+            ),
             Positioned(
               bottom: 90,
               right: 16,
