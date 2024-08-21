@@ -1,3 +1,4 @@
+import 'package:delegacia_facil_app/app/modules/map/components/show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,23 +12,7 @@ class UrlService {
 
   Future<void> ligarDelegacia(BuildContext context, String telefone) async {
     if (telefone.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Erro'),
-            content: const Text("A Delegacia selecionada não possui número."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      showDialogMessage(context, "A Delegacia selecionada não possui número.");
     } else {
       telefone = "+55$telefone";
       final Uri url = Uri(scheme: 'tel', path: telefone);

@@ -1,6 +1,7 @@
 import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
 import 'package:delegacia_facil_app/app/data/repositories/url_service.dart';
+import 'package:delegacia_facil_app/app/modules/map/components/show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -57,6 +58,7 @@ class _MapScreenState extends State<MapScreen> {
     } catch (e) {
       erro = e.toString();
       print('Erro ao obter a localização: $e');
+      // colocar no ShowDialogMessage
     }
   }
 
@@ -197,29 +199,11 @@ class _MapScreenState extends State<MapScreen> {
       }
     } catch (e) {
       print("Erro ao carregar as delegacias: $e");
-      _showErrorDialog("Erro ao carregar as delegacias.");
+      showDialogMessage(context, "Erro ao carregar as delegacias.");
     }
   }
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Erro'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  
 
   void _updateLocation() async {
     await _requestLocationPermission();
@@ -461,7 +445,7 @@ class _MapScreenState extends State<MapScreen> {
       }
     } catch (e) {
       print("Erro ao aplicar os filtros: $e");
-      _showErrorDialog("Erro ao aplicar os filtros.");
+      showDialogMessage(context, "Erro ao aplicar os filtros.");
     }
   }
 
