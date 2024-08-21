@@ -31,12 +31,6 @@ class _MapScreenState extends State<MapScreen> {
   Position? _currentPosition;
   List<Marker> _delegaciaMarkers = [];
   String erro = '';
-  bool diaTodo = false;
-  Map<String, bool> tiposSelecionados = {
-    'Mulher': false,
-    'Idoso': false,
-    'PCD': false,
-  };
 
   @override
   void initState() {
@@ -100,100 +94,31 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _toggleFilters() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.grey[200],
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    _bottomSheet.showFilterBottomSheet(
+      context,
+      removerFiltros: TextButton(
+        onPressed: () {
+          print("botao remover filtros");
+          _resetFilters();
+          Navigator.of(context).pop();
+        },
+        style: TextButton.styleFrom(
+            textStyle: TextStyle(
+                color: Theme.of(context).colorScheme.secondary, fontSize: 16)),
+        child: const Text('Remover Filtros'),
       ),
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Filtros',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  SwitchListTile(
-                    title: const Text('Delegacias 24h'),
-                    value: diaTodo,
-                    onChanged: (bool value) {
-                      setState(() {
-                        diaTodo = value;
-                      });
-                    },
-                  ),
-                  const Divider(),
-                  CheckboxListTile(
-                    title: const Text('Delegacia da Mulher'),
-                    value: tiposSelecionados['Mulher'],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        tiposSelecionados['Mulher'] = value ?? false;
-                      });
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Delegacia do Idoso'),
-                    value: tiposSelecionados['Idoso'],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        tiposSelecionados['Idoso'] = value ?? false;
-                      });
-                    },
-                  ),
-                  CheckboxListTile(
-                    title: const Text('Delegacia PCD'),
-                    value: tiposSelecionados['PCD'],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        tiposSelecionados['PCD'] = value ?? false;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          _resetFilters();
-                          Navigator.of(context).pop();
-                        },
-                        style: TextButton.styleFrom(
-                            textStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 16)),
-                        child: const Text('Remover Filtros'),
-                      ),
-                      const SizedBox(width: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          _applyFilters();
-                          Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onPrimary,
-                            textStyle: const TextStyle(
-                                color: Colors.white, fontSize: 16)),
-                        child: const Text('Aplicar Filtros'),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          },
-        );
-      },
+      aplicarFiltros: ElevatedButton(
+        onPressed: () {
+          print("botao aplicar filtros");
+          _applyFilters();
+          Navigator.of(context).pop();
+        },
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            textStyle: const TextStyle(color: Colors.white, fontSize: 16)),
+        child: const Text('Aplicar Filtros'),
+      ),
     );
   }
 
@@ -201,7 +126,7 @@ class _MapScreenState extends State<MapScreen> {
     try {
       List<Delegacia> delegacias;
 
-      if (diaTodo) {
+      if (_bottomSheet.diaTodo) {
         delegacias = await _delegaciaService.getDelegacias24h(true);
         setState(() {
           _delegaciaMarkers = delegacias.map((delegacia) {
@@ -236,8 +161,8 @@ class _MapScreenState extends State<MapScreen> {
 
   void _resetFilters() async {
     setState(() {
-      diaTodo = false;
-      tiposSelecionados = {
+      _bottomSheet.diaTodo = false;
+      _bottomSheet.tiposSelecionados = {
         'Mulher': false,
         'Idoso': false,
         'PCD': false,

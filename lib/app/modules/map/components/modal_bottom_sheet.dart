@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 
 class BottomSheets {
   final UrlService _urlService = UrlService();
+  bool diaTodo = false;
+  Map<String, bool> tiposSelecionados = {
+    'Mulher': false,
+    'Idoso': false,
+    'PCD': false,
+  };
 
   void showDelegaciaBottomSheet(BuildContext context, Delegacia delegacia) {
     showModalBottomSheet(
@@ -91,6 +97,83 @@ class BottomSheets {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Future<void> showFilterBottomSheet(BuildContext context,
+      {required TextButton removerFiltros,
+      required ElevatedButton aplicarFiltros}) async {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.grey[200],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Filtros',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  SwitchListTile(
+                    title: const Text('Delegacias 24h'),
+                    value: diaTodo,
+                    onChanged: (bool value) {
+                      setState(() {
+                        diaTodo = value;
+                      });
+                    },
+                  ),
+                  const Divider(),
+                  CheckboxListTile(
+                    title: const Text('Delegacia da Mulher'),
+                    value: tiposSelecionados['Mulher'],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tiposSelecionados['Mulher'] = value ?? false;
+                      });
+                    },
+                  ),
+                  CheckboxListTile(
+                    title: const Text('Delegacia do Idoso'),
+                    value: tiposSelecionados['Idoso'],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tiposSelecionados['Idoso'] = value ?? false;
+                      });
+                    },
+                  ),
+                  CheckboxListTile(
+                    title: const Text('Delegacia PCD'),
+                    value: tiposSelecionados['PCD'],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        tiposSelecionados['PCD'] = value ?? false;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      removerFiltros,
+                      const SizedBox(width: 20),
+                      aplicarFiltros
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
         );
       },
     );
