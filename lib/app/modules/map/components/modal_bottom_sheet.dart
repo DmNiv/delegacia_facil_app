@@ -109,7 +109,7 @@ class BottomSheets {
       required ElevatedButton aplicarFiltros}) async {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -121,13 +121,20 @@ class BottomSheets {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
+                  Text(
                     'Filtros',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryContainer),
                   ),
                   const SizedBox(height: 20),
                   SwitchListTile(
-                    title: const Text('Delegacias 24h'),
+                    title: Text(
+                      'Delegacias 24h',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                    ),
                     value: diaTodo,
                     onChanged: (bool value) {
                       setState(() {
@@ -135,9 +142,15 @@ class BottomSheets {
                       });
                     },
                   ),
-                  const Divider(),
+                  Divider(
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
+                  ),
                   CheckboxListTile(
-                    title: const Text('Delegacia da Mulher'),
+                    title: Text('Delegacia da Mulher',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer)),
                     value: tiposSelecionados['Mulher'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -146,7 +159,11 @@ class BottomSheets {
                     },
                   ),
                   CheckboxListTile(
-                    title: const Text('Delegacia do Idoso'),
+                    title: Text('Delegacia do Idoso',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer)),
                     value: tiposSelecionados['Idoso'],
                     onChanged: (bool? value) {
                       setState(() {
@@ -155,7 +172,11 @@ class BottomSheets {
                     },
                   ),
                   CheckboxListTile(
-                    title: const Text('Delegacia PCD'),
+                    title: Text('Delegacia PCD',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer)),
                     value: tiposSelecionados['PCD'],
                     onChanged: (bool? value) {
                       setState(() {
