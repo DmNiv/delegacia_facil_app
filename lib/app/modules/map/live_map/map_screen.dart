@@ -23,7 +23,6 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
   final LocationService _locationService = LocationService();
-  final UrlService _urlService = UrlService();
   final BottomSheets _bottomSheet = BottomSheets();
   final apiClient = DelegaciaFacilApiClient();
   final DelegaciaRepository _delegaciaService =
@@ -55,7 +54,7 @@ class _MapScreenState extends State<MapScreen> {
     } catch (e) {
       erro = e.toString();
       print('Erro ao obter a localização: $e');
-      // colocar no ShowDialogMessage
+      showDialogMessage(context, "Erro ao obter a localização");
     }
   }
 
@@ -216,7 +215,12 @@ class _MapScreenState extends State<MapScreen> {
                     children: [
                       const CircularProgressIndicator(),
                       const SizedBox(height: 20),
-                      Text(erro)
+                      Text(erro,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(
+                                  color: Theme.of(context).colorScheme.primary))
                     ],
                   ))
                 : FlutterMap(
