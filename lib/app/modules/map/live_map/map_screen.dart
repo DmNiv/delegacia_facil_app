@@ -1,6 +1,7 @@
 import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
 import 'package:delegacia_facil_app/app/data/repositories/url_service.dart';
+import 'package:delegacia_facil_app/app/modules/map/components/floating_button.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/show_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -38,12 +39,12 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission();
+    requestLocationPermission();
     _loadDelegacias();
   }
 
   // isso fica aqui
-  Future<void> _requestLocationPermission() async {
+  Future<void> requestLocationPermission() async {
     try {
       final position = await _locationService.determinePosition();
       setState(() {
@@ -130,8 +131,8 @@ class _MapScreenState extends State<MapScreen> {
                                 children: [
                                   Center(
                                     child: ElevatedButton.icon(
-                                      icon: Icon(Icons.phone),
-                                      label: Text("Ligar"),
+                                      icon: const Icon(Icons.phone),
+                                      label: const Text("Ligar"),
                                       onPressed: () {
                                         _urlService.ligarDelegacia(
                                             context, delegacia.telefone);
@@ -366,8 +367,8 @@ class _MapScreenState extends State<MapScreen> {
                                                   .onPrimaryContainer))),
                               Center(
                                 child: ElevatedButton.icon(
-                                  icon: Icon(Icons.phone),
-                                  label: Text("Ligar"),
+                                  icon: const Icon(Icons.phone),
+                                  label: const Text("Ligar"),
                                   onPressed: () {
                                     _urlService.ligarDelegacia(
                                         context, delegacia.telefone);
@@ -453,137 +454,114 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileScreen()),
-                );
-              },
-              icon: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  "AB",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.surfaceTint,
-                    fontSize: 16,
-                  ),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+            icon: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Text(
+                "AB",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.surfaceTint,
+                  fontSize: 16,
                 ),
               ),
-            ),
-          ],
-          centerTitle: true,
-          title: const Text(
-            'DelegaciaFácil',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28.0,
-              fontWeight: FontWeight.w500,
             ),
           ),
-          backgroundColor: Colors.deepPurple,
+        ],
+        centerTitle: true,
+        title: const Text(
+          'DelegaciaFácil',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 28.0,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        body: Stack(
-          children: [
-            Center(
-              child: _currentPosition == null
-                  ? Center(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 20),
-                        Text(erro)
-                      ],
-                    ))
-                  : FlutterMap(
-                      mapController: _mapController,
-                      options: MapOptions(
-                          initialCenter: LatLng(
-                            _currentPosition!.latitude,
-                            _currentPosition!.longitude,
-                          ),
-                          initialZoom: 18,
-                          initialRotation: 0.0,
-                          interactionOptions: const InteractionOptions(
-                            flags:
-                                InteractiveFlag.all & ~InteractiveFlag.rotate,
-                          )),
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-                          subdomains: const ['a', 'b', 'c', 'd'],
-                          retinaMode: true,
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Stack(
+        children: [
+          Center(
+            child: _currentPosition == null
+                ? Center(
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 20),
+                      Text(erro)
+                    ],
+                  ))
+                : FlutterMap(
+                    mapController: _mapController,
+                    options: MapOptions(
+                        initialCenter: LatLng(
+                          _currentPosition!.latitude,
+                          _currentPosition!.longitude,
                         ),
-                        CurrentLocationLayer(
-                          style: const LocationMarkerStyle(
-                              marker: DefaultLocationMarker(
-                                color: Colors.blue,
-                              ),
-                              markerSize: Size(30, 30),
-                              headingSectorRadius: 40),
-                        ),
-                        MarkerLayer(markers: _delegaciaMarkers),
-                      ],
-                    ),
+                        initialZoom: 18,
+                        initialRotation: 0.0,
+                        interactionOptions: const InteractionOptions(
+                          flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+                        )),
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                        subdomains: const ['a', 'b', 'c', 'd'],
+                        retinaMode: true,
+                      ),
+                      CurrentLocationLayer(
+                        style: const LocationMarkerStyle(
+                            marker: DefaultLocationMarker(
+                              color: Colors.blue,
+                            ),
+                            markerSize: Size(30, 30),
+                            headingSectorRadius: 40),
+                      ),
+                      MarkerLayer(markers: _delegaciaMarkers),
+                    ],
+                  ),
+          ),
+        ],
+      ),
+      floatingActionButton: Stack(
+        children: [
+          DelegaciaVirtual(),
+          BotaoPanico(context),
+          Positioned(
+            bottom: 90,
+            right: 16,
+            child: FloatingActionButton(
+              onPressed: () async {
+                await requestLocationPermission();
+                _mapController.move(
+                  LatLng(
+                    _currentPosition!.latitude,
+                    _currentPosition!.longitude,
+                  ),
+                  18,
+                );
+              },
+              child: const Icon(Icons.my_location),
             ),
-          ],
-        ),
-        floatingActionButton: Stack(
-          children: [
-            Positioned(
-              top: 120,
-              right: 16,
-              child: FloatingActionButton(
-                onPressed: () {
-                  _urlService
-                      .launchURL("https://delegaciavirtual.pa.gov.br/#/");
-                },
-                child: const Icon(Icons.policy_rounded),
-              ),
-            ),
-            Positioned(
-              top: 194,
-              right: 16,
-              child: FloatingActionButton(
-                backgroundColor: Theme.of(context).colorScheme.error,
-                onPressed: () {},
-                child: Icon(
-                  Icons.warning_amber_outlined,
-                  color: Theme.of(context).colorScheme.onError,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 90,
-              right: 16,
-              child: FloatingActionButton(
-                onPressed: () async {
-                  await _requestLocationPermission();
-                  _mapController.move(
-                    LatLng(
-                      _currentPosition!.latitude,
-                      _currentPosition!.longitude,
-                    ),
-                    18,
-                  );
-                },
-                child: const Icon(Icons.my_location),
-              ),
-            ),
-            Positioned(
-              bottom: 16,
-              right: 16,
-              child: FloatingActionButton(
+          ),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: FloatingActionButton(
                 onPressed: _toggleFilters,
-                child: const Icon(Icons.filter_list),
-              ),
-            ),
-          ],
-        ));
+                child: const Icon(Icons.filter_list)),
+          ),
+        ],
+      ),
+    );
   }
 }

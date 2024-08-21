@@ -14,7 +14,6 @@ class UrlService {
     if (telefone.isEmpty) {
       showDialogMessage(context, "A Delegacia selecionada não possui número.");
     } else {
-      telefone = "+55$telefone";
       final Uri url = Uri(scheme: 'tel', path: telefone);
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
