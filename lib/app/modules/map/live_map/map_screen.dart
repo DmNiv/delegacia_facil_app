@@ -1,15 +1,14 @@
 import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
+import 'package:delegacia_facil_app/app/data/repositories/url_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:delegacia_facil_app/app/data/repositories/delegacia/delegacia_repository.dart';
 import 'package:delegacia_facil_app/app/data/repositories/location_service.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -21,6 +20,7 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
   final LocationService _locationService = LocationService();
+  final UrlService _urlService = UrlService();
   final apiClient = DelegaciaFacilApiClient();
   final DelegaciaRepository _delegaciaService =
       DelegaciaRepository.defaultClient();
@@ -34,13 +34,6 @@ class _MapScreenState extends State<MapScreen> {
     'PCD': false,
   };
 
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri)) {
-      throw 'Não foi possível abrir a URL: $url';
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -48,6 +41,7 @@ class _MapScreenState extends State<MapScreen> {
     _loadDelegacias();
   }
 
+  // isso fica aqui
   Future<void> _requestLocationPermission() async {
     try {
       final position = await _locationService.determinePosition();
@@ -63,37 +57,6 @@ class _MapScreenState extends State<MapScreen> {
     } catch (e) {
       erro = e.toString();
       print('Erro ao obter a localização: $e');
-    }
-  }
-
-  Future<void> _ligarDelegacia(String telefone) async {
-    print(telefone);
-
-    if (telefone.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Erro'),
-            content: Text("A Delegacia selecionada não possui número."),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-    telefone = "+55" + telefone;
-    final Uri url = Uri(scheme: 'tel', path: telefone);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      print("Não foi possível abrir o discador");
     }
   }
 
@@ -168,7 +131,8 @@ class _MapScreenState extends State<MapScreen> {
                                       icon: Icon(Icons.phone),
                                       label: Text("Ligar"),
                                       onPressed: () {
-                                        _ligarDelegacia(delegacia.telefone);
+                                        _urlService.ligarDelegacia(
+                                            context, delegacia.telefone);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         elevation: 4,
@@ -193,7 +157,7 @@ class _MapScreenState extends State<MapScreen> {
                                   Center(
                                     child: ElevatedButton.icon(
                                       onPressed: () =>
-                                          _launchURL(delegacia.mapUrl),
+                                          _urlService.launchURL(delegacia.mapUrl),
                                       icon: const Icon(Icons.explore),
                                       label: const Text('Rota'),
                                       style: ElevatedButton.styleFrom(
@@ -434,7 +398,7 @@ class _MapScreenState extends State<MapScreen> {
                                   icon: Icon(Icons.phone),
                                   label: Text("Ligar"),
                                   onPressed: () {
-                                    _ligarDelegacia(delegacia.telefone);
+                                    _urlService.ligarDelegacia(context, delegacia.telefone);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 4,
@@ -457,7 +421,7 @@ class _MapScreenState extends State<MapScreen> {
                               const SizedBox(height: 8),
                               Center(
                                 child: ElevatedButton.icon(
-                                  onPressed: () => _launchURL(delegacia.mapUrl),
+                                  onPressed: () => _urlService.launchURL(delegacia.mapUrl),
                                   icon: const Icon(Icons.map_rounded),
                                   label: const Text('Abrir no Google Mapas'),
                                   style: ElevatedButton.styleFrom(
@@ -603,7 +567,7 @@ class _MapScreenState extends State<MapScreen> {
               right: 16,
               child: FloatingActionButton(
                 onPressed: () {
-                  _launchURL("https://delegaciavirtual.pa.gov.br/#/");
+                  _urlService.launchURL("https://delegaciavirtual.pa.gov.br/#/");
                 },
                 child: const Icon(Icons.policy_rounded),
               ),
