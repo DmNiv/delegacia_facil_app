@@ -1,6 +1,5 @@
 import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
-import 'package:delegacia_facil_app/app/data/repositories/url_service.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/floating_button.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/dialog_message.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/modal_bottom_sheet.dart';
