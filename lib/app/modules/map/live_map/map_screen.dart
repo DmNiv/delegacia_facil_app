@@ -158,8 +158,8 @@ class _MapScreenState extends State<MapScreen> {
                                   const SizedBox(width: 8),
                                   Center(
                                     child: ElevatedButton.icon(
-                                      onPressed: () =>
-                                          _urlService.launchURL(delegacia.mapUrl),
+                                      onPressed: () => _urlService
+                                          .launchURL(delegacia.mapUrl),
                                       icon: const Icon(Icons.explore),
                                       label: const Text('Rota'),
                                       style: ElevatedButton.styleFrom(
@@ -201,19 +201,6 @@ class _MapScreenState extends State<MapScreen> {
       print("Erro ao carregar as delegacias: $e");
       showDialogMessage(context, "Erro ao carregar as delegacias.");
     }
-  }
-
-  
-
-  void _updateLocation() async {
-    await _requestLocationPermission();
-    _mapController.move(
-      LatLng(
-        _currentPosition!.latitude,
-        _currentPosition!.longitude,
-      ),
-      18,
-    );
   }
 
   void _toggleFilters() {
@@ -382,7 +369,8 @@ class _MapScreenState extends State<MapScreen> {
                                   icon: Icon(Icons.phone),
                                   label: Text("Ligar"),
                                   onPressed: () {
-                                    _urlService.ligarDelegacia(context, delegacia.telefone);
+                                    _urlService.ligarDelegacia(
+                                        context, delegacia.telefone);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 4,
@@ -405,7 +393,8 @@ class _MapScreenState extends State<MapScreen> {
                               const SizedBox(height: 8),
                               Center(
                                 child: ElevatedButton.icon(
-                                  onPressed: () => _urlService.launchURL(delegacia.mapUrl),
+                                  onPressed: () =>
+                                      _urlService.launchURL(delegacia.mapUrl),
                                   icon: const Icon(Icons.map_rounded),
                                   label: const Text('Abrir no Google Mapas'),
                                   style: ElevatedButton.styleFrom(
@@ -551,7 +540,8 @@ class _MapScreenState extends State<MapScreen> {
               right: 16,
               child: FloatingActionButton(
                 onPressed: () {
-                  _urlService.launchURL("https://delegaciavirtual.pa.gov.br/#/");
+                  _urlService
+                      .launchURL("https://delegaciavirtual.pa.gov.br/#/");
                 },
                 child: const Icon(Icons.policy_rounded),
               ),
@@ -572,7 +562,16 @@ class _MapScreenState extends State<MapScreen> {
               bottom: 90,
               right: 16,
               child: FloatingActionButton(
-                onPressed: _updateLocation,
+                onPressed: () async {
+                  await _requestLocationPermission();
+                  _mapController.move(
+                    LatLng(
+                      _currentPosition!.latitude,
+                      _currentPosition!.longitude,
+                    ),
+                    18,
+                  );
+                },
                 child: const Icon(Icons.my_location),
               ),
             ),
