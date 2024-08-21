@@ -1,4 +1,4 @@
-import 'package:delegacia_facil_app/app/modules/map/components/show_dialog.dart';
+import 'package:delegacia_facil_app/app/modules/map/components/dialog_message.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
