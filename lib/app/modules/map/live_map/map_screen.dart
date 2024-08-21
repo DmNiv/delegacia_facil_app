@@ -175,13 +175,11 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
-        title: Text(
-          "Delegacia Fácil",
-          style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
-              fontWeight: FontWeight.w500,
-              fontSize: 28.8),
-        ),
+        title: Text("Delegacia Fácil",
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.w500,
+                fontSize: 28.8)),
         actions: [
           IconButton(
             onPressed: () {
@@ -192,13 +190,10 @@ class _MapScreenState extends State<MapScreen> {
             },
             icon: CircleAvatar(
               backgroundColor: Colors.white,
-              child: Text(
-                "AB",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  fontSize: 16,
-                ),
-              ),
+              child: Text("AB",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.surfaceTint,
+                      fontSize: 16)),
             ),
           ),
         ],
