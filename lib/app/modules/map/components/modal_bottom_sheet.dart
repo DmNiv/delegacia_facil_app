@@ -39,7 +39,9 @@ class BottomSheets {
                 Padding(
                     padding: const EdgeInsets.only(left: 8, bottom: 8),
                     child: Text(
-                        "Horário de funcionamento: ${delegacia.diaTodo}",
+                        delegacia.diaTodo
+                            ? "Horário de Funcionamento: 24h"
+                            : "Horário de Funcionamento: 8h - 18h",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: Theme.of(context)
                                 .colorScheme
