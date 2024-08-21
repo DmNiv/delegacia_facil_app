@@ -236,7 +236,7 @@ class _MapScreenState extends State<MapScreen> {
                     children: [
                       TileLayer(
                         urlTemplate:
-                            "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                            "https://{s}.basemaps.cartocdn.com/${Theme.of(context).colorScheme.brightness == Brightness.light ? "light" : "dark"}_all/{z}/{x}/{y}{r}.png",
                         subdomains: const ['a', 'b', 'c', 'd'],
                         retinaMode: true,
                       ),
@@ -259,29 +259,25 @@ class _MapScreenState extends State<MapScreen> {
           DelegaciaVirtual(),
           BotaoPanico(context),
           Positioned(
-            bottom: 90,
-            right: 16,
-            child: FloatingActionButton(
-              onPressed: () async {
-                await requestLocationPermission();
-                _mapController.move(
-                  LatLng(
-                    _currentPosition!.latitude,
-                    _currentPosition!.longitude,
-                  ),
-                  18,
-                );
-              },
-              child: const Icon(Icons.my_location),
-            ),
-          ),
+              bottom: 90,
+              right: 16,
+              child: FloatingActionButton(
+                  onPressed: () async {
+                    await requestLocationPermission();
+                    _mapController.move(
+                        LatLng(
+                          _currentPosition!.latitude,
+                          _currentPosition!.longitude,
+                        ),
+                        18);
+                  },
+                  child: const Icon(Icons.my_location))),
           Positioned(
-            bottom: 16,
-            right: 16,
-            child: FloatingActionButton(
-                onPressed: _toggleFilters,
-                child: const Icon(Icons.filter_list)),
-          ),
+              bottom: 16,
+              right: 16,
+              child: FloatingActionButton(
+                  onPressed: _toggleFilters,
+                  child: const Icon(Icons.filter_list)))
         ],
       ),
     );
