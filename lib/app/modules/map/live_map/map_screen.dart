@@ -3,6 +3,7 @@ import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_clien
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:delegacia_facil_app/app/data/repositories/delegacia/delegacia_repository.dart';
@@ -66,6 +67,8 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _ligarDelegacia(String telefone) async {
+    print(telefone);
+
     if (telefone.isEmpty) {
       showDialog(
         context: context,
@@ -157,55 +160,63 @@ class _MapScreenState extends State<MapScreen> {
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .onPrimaryContainer))),
-                              Center(
-                                child: ElevatedButton.icon(
-                                  icon: Icon(Icons.phone),
-                                  label: Text("Ligar"),
-                                  onPressed: () {
-                                    _ligarDelegacia(delegacia.telefone);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 4,
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .secondaryContainer,
-                                    foregroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 14, vertical: 7),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: ElevatedButton.icon(
+                                      icon: Icon(Icons.phone),
+                                      label: Text("Ligar"),
+                                      onPressed: () {
+                                        _ligarDelegacia(delegacia.telefone);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 4,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondaryContainer,
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 12),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Center(
-                                child: ElevatedButton.icon(
-                                  onPressed: () => _launchURL(delegacia.mapUrl),
-                                  icon: const Icon(Icons.map_rounded),
-                                  label: const Text('Abrir no Google Mapas'),
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 4,
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .secondaryContainer,
-                                    foregroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 28, vertical: 14),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                  const SizedBox(width: 8),
+                                  Center(
+                                    child: ElevatedButton.icon(
+                                      onPressed: () =>
+                                          _launchURL(delegacia.mapUrl),
+                                      icon: const Icon(Icons.explore),
+                                      label: const Text('Rota'),
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 4,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondaryContainer,
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 24, vertical: 12),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
+                                ],
+                              )
                             ],
                           ),
                         ),
@@ -594,7 +605,19 @@ class _MapScreenState extends State<MapScreen> {
                 onPressed: () {
                   _launchURL("https://delegaciavirtual.pa.gov.br/#/");
                 },
-                child: const Icon(Icons.warning),
+                child: const Icon(Icons.policy_rounded),
+              ),
+            ),
+            Positioned(
+              top: 194,
+              right: 16,
+              child: FloatingActionButton(
+                backgroundColor: Theme.of(context).colorScheme.error,
+                onPressed: () {},
+                child: Icon(
+                  Icons.warning_amber_outlined,
+                  color: Theme.of(context).colorScheme.onError,
+                ),
               ),
             ),
             Positioned(

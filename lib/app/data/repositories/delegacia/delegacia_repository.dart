@@ -12,7 +12,7 @@ class DelegaciaRepository implements IDelegaciaRepository {
   @override
   Future<List<Delegacia>> getDelegacias() async {
     const url =
-        'https://6ee1-2804-14c-599a-813b-c1cd-9da8-46f0-684d.ngrok-free.app/api/v1/delegacias/lista-delegacias';
+        'https://7d5a-2804-14c-598f-89b1-8158-8480-e2bf-f42a.ngrok-free.app/api/v1/delegacias/lista-delegacias';
     final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
     try {
       final response = await apiClient.get(url, headers: headers);
@@ -28,7 +28,7 @@ class DelegaciaRepository implements IDelegaciaRepository {
   @override
   Future<List<Delegacia>> getDelegacias24h(bool diaTodo) async {
     const baseUrl =
-        'https://6ee1-2804-14c-599a-813b-c1cd-9da8-46f0-684d.ngrok-free.app/api/v1/delegacias';
+        'https://7d5a-2804-14c-598f-89b1-8158-8480-e2bf-f42a.ngrok-free.app/api/v1/delegacias';
     final url = '$baseUrl/filtro?diaTodo=$diaTodo';
     final Map<String, dynamic> headers = {'ngrok-skip-browser-warning': 1};
 
