@@ -173,6 +173,15 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        centerTitle: true,
+        title: Text(
+          "Delegacia Fácil",
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.w500,
+              fontSize: 28.8),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -193,16 +202,6 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ),
         ],
-        centerTitle: true,
-        title: const Text(
-          'DelegaciaFácil',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 28.0,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        backgroundColor: Colors.deepPurple,
       ),
       body: Stack(
         children: [
