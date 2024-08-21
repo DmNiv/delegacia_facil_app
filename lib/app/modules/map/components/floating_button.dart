@@ -24,7 +24,7 @@ Widget BotaoPanico(BuildContext context) {
       backgroundColor: Theme.of(context).colorScheme.error,
       onPressed: () => _urlService.ligarDelegacia(context, '190'),
       child: Icon(
-        Icons.warning_amber_outlined,
+        Icons.sos,
         color: Theme.of(context).colorScheme.onError,
       ),
     ),
