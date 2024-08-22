@@ -1,6 +1,5 @@
 import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
-import 'package:delegacia_facil_app/app/modules/info_screen/info_screen.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/floating_button.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/dialog_message.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/modal_bottom_sheet.dart';
@@ -11,7 +10,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:delegacia_facil_app/app/data/repositories/delegacia/delegacia_repository.dart';
 import 'package:delegacia_facil_app/app/data/repositories/location_service.dart';
-import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_view.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});

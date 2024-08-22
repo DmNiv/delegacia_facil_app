@@ -154,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 20),
                   TextField(
                     controller: _cellphoneNumberController,
-                    keyboardType: TextInputType.numberWithOptions(),
+                    keyboardType: const TextInputType.numberWithOptions(),
                     decoration: const InputDecoration(
                         labelText: "Celular", border: OutlineInputBorder()),
                   ),

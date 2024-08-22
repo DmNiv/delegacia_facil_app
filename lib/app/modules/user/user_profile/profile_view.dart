@@ -1,4 +1,3 @@
-import 'package:delegacia_facil_app/app/modules/user/user_edit_profile/edit_profile_screen.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_data.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_profile/profile_icon.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +30,7 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const EditProfileScreen()));
+              Navigator.pushNamed(context, '/edit-profile');
             },
             icon: Icon(
               Icons.edit_rounded,
