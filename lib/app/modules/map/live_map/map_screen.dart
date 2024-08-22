@@ -1,5 +1,6 @@
 import 'package:delegacia_facil_app/app/data/models/delegacia.model.dart';
 import 'package:delegacia_facil_app/app/data/providers/delegacia_facil_api_client/delegacia_facil_api_client.provider.dart';
+import 'package:delegacia_facil_app/app/modules/info_screen/info_screen.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/floating_button.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/dialog_message.dart';
 import 'package:delegacia_facil_app/app/modules/map/components/modal_bottom_sheet.dart';
@@ -180,13 +181,17 @@ class _MapScreenState extends State<MapScreen> {
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.w500,
                 fontSize: 28.8)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/info');
+            },
+            icon: const CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.info_outline))),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              );
+              Navigator.pushNamed(context, '/profile');
             },
             icon: CircleAvatar(
               backgroundColor: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:delegacia_facil_app/app/modules/info_screen/info_screen.dart';
 import 'package:delegacia_facil_app/app/modules/map/live_map/map_screen.dart';
 import 'package:delegacia_facil_app/app/modules/spash_screen/splash_screen.dart';
 import 'package:delegacia_facil_app/app/modules/user/user_edit_profile/edit_profile_screen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LoginScreen(),
         '/cadastro':(context) => const SignUpScreen(),
         '/home': (context) => const MapScreen(),
+        '/info': (context) => const InfoScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/edit-profile': (context) => const EditProfileScreen(),
       },
