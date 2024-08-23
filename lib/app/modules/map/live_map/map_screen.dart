@@ -95,7 +95,6 @@ class _MapScreenState extends State<MapScreen> {
       context,
       removerFiltros: TextButton(
         onPressed: () {
-          print("botao remover filtros");
           _resetFilters();
           Navigator.of(context).pop();
         },
@@ -106,7 +105,6 @@ class _MapScreenState extends State<MapScreen> {
       ),
       aplicarFiltros: ElevatedButton(
         onPressed: () {
-          print("botao aplicar filtros");
           _applyFilters();
           Navigator.of(context).pop();
         },
@@ -183,19 +181,19 @@ class _MapScreenState extends State<MapScreen> {
             onPressed: () {
               Navigator.pushNamed(context, '/info');
             },
-            icon: const CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.info_outline))),
+            icon: CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                child: Icon(Icons.info_outline, color: Theme.of(context).colorScheme.onPrimaryContainer,))),
         actions: [
           IconButton(
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
             icon: CircleAvatar(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
               child: Text("AB",
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.surfaceTint,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                       fontSize: 16)),
             ),
           ),

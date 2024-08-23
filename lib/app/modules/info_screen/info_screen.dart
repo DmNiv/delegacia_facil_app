@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen({super.key});
@@ -15,40 +14,40 @@ class _InfoScreenState extends State<InfoScreen> {
       required String description,
       required String cases}) {
     return ExpansionTile(
-      title: Text(
-        title,
-        style: GoogleFonts.poppins(
-          color: Theme.of(context).colorScheme.primary,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      title: Text(title,
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w600)),
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodyLarge,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(description,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface)),
               ),
               ExpansionTile(
-                title: Text(
-                  "Casos",
-                  style: GoogleFonts.poppins(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                title: Text("Casos",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w500)),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      cases,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Text(cases,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface)),
+                      )),
                 ],
               ),
             ],
@@ -63,6 +62,15 @@ class _InfoScreenState extends State<InfoScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
         centerTitle: true,
         title: Text(
           "Informações",
@@ -105,57 +113,57 @@ class _InfoScreenState extends State<InfoScreen> {
                   context: context,
                   title: "Delegacia de Crimes Cibernéticos",
                   description:
-                  "Especializada em crimes cometidos através da internet, a Delegacia de Crimes Cibernéticos investiga fraudes eletrônicas, roubo de dados, invasões de sistemas, disseminação de conteúdo ilegal e outros delitos virtuais. A delegacia também atua na prevenção e conscientização sobre os riscos e as medidas de segurança no ambiente digital.",
+                      "Especializada em crimes cometidos através da internet, a Delegacia de Crimes Cibernéticos investiga fraudes eletrônicas, roubo de dados, invasões de sistemas, disseminação de conteúdo ilegal e outros delitos virtuais. A delegacia também atua na prevenção e conscientização sobre os riscos e as medidas de segurança no ambiente digital.",
                   cases:
-                  "Se você foi vítima de golpes online, teve suas informações pessoais ou financeiras comprometidas, sofreu ataques virtuais como phishing ou ransomware, ou se deparou com conteúdos ilegais na internet, esta delegacia é a responsável por investigar e combater esses crimes."),
+                      "Se você foi vítima de golpes online, teve suas informações pessoais ou financeiras comprometidas, sofreu ataques virtuais como phishing ou ransomware, ou se deparou com conteúdos ilegais na internet, esta delegacia é a responsável por investigar e combater esses crimes."),
               const SizedBox(height: 12),
               buildExpansionTile(
                   context: context,
                   title: "Delegacia de Homicídios",
                   description:
-                  "A Delegacia de Homicídios é responsável pela investigação de crimes de homicídio e tentativa de homicídio. A equipe especializada realiza a coleta de provas, perícias, identificação de suspeitos e outras atividades para solucionar esses crimes e levar os responsáveis à justiça. Além disso, a delegacia oferece suporte às famílias das vítimas durante o processo investigativo.",
+                      "A Delegacia de Homicídios é responsável pela investigação de crimes de homicídio e tentativa de homicídio. A equipe especializada realiza a coleta de provas, perícias, identificação de suspeitos e outras atividades para solucionar esses crimes e levar os responsáveis à justiça. Além disso, a delegacia oferece suporte às famílias das vítimas durante o processo investigativo.",
                   cases:
-                  "Em casos de homicídio ou tentativa de homicídio, é essencial acionar a Delegacia de Homicídios para que uma investigação detalhada seja conduzida. A delegacia também deve ser procurada para denúncias e informações que possam auxiliar na resolução de casos relacionados."),
+                      "Em casos de homicídio ou tentativa de homicídio, é essencial acionar a Delegacia de Homicídios para que uma investigação detalhada seja conduzida. A delegacia também deve ser procurada para denúncias e informações que possam auxiliar na resolução de casos relacionados."),
               const SizedBox(height: 12),
               buildExpansionTile(
                   context: context,
                   title: "Delegacia de Narcóticos",
                   description:
-                  "Focada no combate ao tráfico de drogas, a Delegacia de Narcóticos investiga e reprime a produção, distribuição e venda de substâncias ilícitas. A delegacia realiza operações de apreensão de drogas, prisão de traficantes e investigações para desmantelar redes de tráfico. Além disso, atua na conscientização sobre os perigos do uso de drogas.",
+                      "Focada no combate ao tráfico de drogas, a Delegacia de Narcóticos investiga e reprime a produção, distribuição e venda de substâncias ilícitas. A delegacia realiza operações de apreensão de drogas, prisão de traficantes e investigações para desmantelar redes de tráfico. Além disso, atua na conscientização sobre os perigos do uso de drogas.",
                   cases:
-                  "Se você tiver informações sobre pontos de venda de drogas, presenciar atividades suspeitas relacionadas ao tráfico ou for vítima de crimes envolvendo substâncias ilícitas, procure a Delegacia de Narcóticos para denunciar e auxiliar nas investigações."),
+                      "Se você tiver informações sobre pontos de venda de drogas, presenciar atividades suspeitas relacionadas ao tráfico ou for vítima de crimes envolvendo substâncias ilícitas, procure a Delegacia de Narcóticos para denunciar e auxiliar nas investigações."),
               const SizedBox(height: 12),
               buildExpansionTile(
                   context: context,
                   title: "Delegacia de Atendimento ao Turista (Deat)",
                   description:
-                  "A Delegacia de Atendimento ao Turista é especializada em oferecer suporte a visitantes que enfrentam problemas durante sua estadia. Ela registra boletins de ocorrência para casos como furtos, roubos, perda de documentos, entre outros, e oferece assistência em várias línguas para garantir que o turista compreenda e resolva sua situação. A delegacia também atua na orientação sobre os procedimentos legais no país.",
+                      "A Delegacia de Atendimento ao Turista é especializada em oferecer suporte a visitantes que enfrentam problemas durante sua estadia. Ela registra boletins de ocorrência para casos como furtos, roubos, perda de documentos, entre outros, e oferece assistência em várias línguas para garantir que o turista compreenda e resolva sua situação. A delegacia também atua na orientação sobre os procedimentos legais no país.",
                   cases:
-                  "Turistas que foram vítimas de crimes, perderam documentos ou precisam de orientação sobre questões legais durante sua viagem devem procurar a Delegacia de Atendimento ao Turista para receber apoio adequado, registrar ocorrências e obter informações sobre seus direitos e deveres."),
+                      "Turistas que foram vítimas de crimes, perderam documentos ou precisam de orientação sobre questões legais durante sua viagem devem procurar a Delegacia de Atendimento ao Turista para receber apoio adequado, registrar ocorrências e obter informações sobre seus direitos e deveres."),
               const SizedBox(height: 12),
               buildExpansionTile(
                   context: context,
                   title: "Delegacia de Crimes Contra o Meio Ambiente",
                   description:
-                  "A Delegacia de Crimes Contra o Meio Ambiente é encarregada de investigar e reprimir ações que causem danos ao meio ambiente. Isso inclui crimes como desmatamento ilegal, poluição de rios e solos, caça e tráfico de animais silvestres, e outras atividades que prejudicam a natureza. A delegacia atua na preservação dos recursos naturais e na aplicação das leis ambientais.",
+                      "A Delegacia de Crimes Contra o Meio Ambiente é encarregada de investigar e reprimir ações que causem danos ao meio ambiente. Isso inclui crimes como desmatamento ilegal, poluição de rios e solos, caça e tráfico de animais silvestres, e outras atividades que prejudicam a natureza. A delegacia atua na preservação dos recursos naturais e na aplicação das leis ambientais.",
                   cases:
-                  "Em casos de desmatamento ilegal, poluição, maus-tratos a animais silvestres ou outras agressões ao meio ambiente, procure esta delegacia para registrar denúncias, solicitar investigações e promover a proteção ambiental."),
+                      "Em casos de desmatamento ilegal, poluição, maus-tratos a animais silvestres ou outras agressões ao meio ambiente, procure esta delegacia para registrar denúncias, solicitar investigações e promover a proteção ambiental."),
               const SizedBox(height: 12),
               buildExpansionTile(
                   context: context,
                   title: "Delegacia de Proteção à Criança e ao Adolescente",
                   description:
-                  "Focada na proteção dos direitos de crianças e adolescentes, esta delegacia investiga e combate crimes como violência, abuso sexual, exploração e negligência contra menores. A delegacia oferece suporte psicológico, social e jurídico às vítimas e suas famílias, além de atuar na prevenção e educação sobre os direitos infantojuvenis.",
+                      "Focada na proteção dos direitos de crianças e adolescentes, esta delegacia investiga e combate crimes como violência, abuso sexual, exploração e negligência contra menores. A delegacia oferece suporte psicológico, social e jurídico às vítimas e suas famílias, além de atuar na prevenção e educação sobre os direitos infantojuvenis.",
                   cases:
-                  "Se você souber de casos de abuso, violência, exploração ou negligência envolvendo crianças ou adolescentes, procure esta delegacia para registrar a denúncia, garantir a proteção da vítima e iniciar as devidas investigações."),
+                      "Se você souber de casos de abuso, violência, exploração ou negligência envolvendo crianças ou adolescentes, procure esta delegacia para registrar a denúncia, garantir a proteção da vítima e iniciar as devidas investigações."),
               const SizedBox(height: 12),
               buildExpansionTile(
                   context: context,
                   title: "Delegacia de Trânsito",
                   description:
-                  "A Delegacia de Trânsito lida com ocorrências relacionadas ao trânsito, como acidentes, infrações graves, direção perigosa e embriaguez ao volante. Ela investiga as circunstâncias dos acidentes, elabora boletins de ocorrência e aplica as sanções cabíveis conforme a legislação de trânsito.",
+                      "A Delegacia de Trânsito lida com ocorrências relacionadas ao trânsito, como acidentes, infrações graves, direção perigosa e embriaguez ao volante. Ela investiga as circunstâncias dos acidentes, elabora boletins de ocorrência e aplica as sanções cabíveis conforme a legislação de trânsito.",
                   cases:
-                  "Procure a Delegacia de Trânsito se você se envolveu em um acidente de trânsito, testemunhou uma infração grave, ou precisa registrar uma ocorrência relacionada a questões viárias, como direção sob influência de álcool ou fuga do local do acidente."),
+                      "Procure a Delegacia de Trânsito se você se envolveu em um acidente de trânsito, testemunhou uma infração grave, ou precisa registrar uma ocorrência relacionada a questões viárias, como direção sob influência de álcool ou fuga do local do acidente."),
             ],
           ),
         ),
