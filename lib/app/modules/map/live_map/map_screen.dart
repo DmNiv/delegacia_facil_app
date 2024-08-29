@@ -176,14 +176,17 @@ class _MapScreenState extends State<MapScreen> {
             style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.w500,
-                fontSize: 28.8)),
+                fontSize: 28)),
         leading: IconButton(
             onPressed: () {
               Navigator.pushNamed(context, '/info');
             },
             icon: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                child: Icon(Icons.info_outline, color: Theme.of(context).colorScheme.onPrimaryContainer,))),
+                child: Icon(
+                  Icons.info_outline,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ))),
         actions: [
           IconButton(
             onPressed: () {
