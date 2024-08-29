@@ -29,6 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 40),
             Image.asset("assets/logo_prefeitura.png", width: 200),
             const SizedBox(height: 20),
+            Image.asset("assets/logo_oficina_futuro.png", width: 200),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
