@@ -25,18 +25,25 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset("assets/logo_app.png", height: 200),
-            const SizedBox(height: 40),
-            Image.asset("assets/logo_prefeitura.png", width: 200),
+            Text(
+              "Delegacia Fácil",
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                  color: Color.fromARGB(255, 114, 0, 176),
+                  fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 20),
-            Image.asset("assets/logo_oficina_futuro.png", width: 200),
+            Image.asset("assets/logo_app.png", height: 120),
+            const SizedBox(height: 40),
+            Image.asset("assets/logo_prefeitura.png", width: 160),
+            const SizedBox(height: 20),
+            Image.asset("assets/logo_oficina_futuro.png", width: 160),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("assets/logo_ufpa.png", height: 100),
+                Image.asset("assets/logo_ufpa.png", height: 80),
                 const SizedBox(width: 20),
-                Image.asset("assets/logo_facomp.png", height: 100)
+                Image.asset("assets/logo_facomp.png", height: 80)
               ],
             )
           ],
